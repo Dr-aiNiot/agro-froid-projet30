@@ -18,6 +18,7 @@
 ## Livrables
 
 - Depot : https://github.com/Dr-aiNiot/agro-froid-projet30
+- Drive : https://drive.google.com/drive/u/2/folders/1Qqt_aieE6jwBaeMkLvPxduOkUjQJfArD
 - Board : `PROJECT_BOARD.md`
 - M5 : `M5/README.md` et `M5/STATUS.md`
 - Cahier des charges : `00_DOC/Cahier_des_Charges_Projet30_AGRO-FROID.pdf`

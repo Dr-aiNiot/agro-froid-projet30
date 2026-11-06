@@ -3,6 +3,7 @@
 Board de secours GitHub (le Project v2 n'est pas activé faute de scope `project` sur le token). Les 42 tâches sont dans les **Issues**, avec labels, milestones et propriétaires dans le titre.
 
 - Dépôt : https://github.com/Dr-aiNiot/agro-froid-projet30
+- Drive : https://drive.google.com/drive/u/2/folders/1Qqt_aieE6jwBaeMkLvPxduOkUjQJfArD
 - Issues : https://github.com/Dr-aiNiot/agro-froid-projet30/issues
 - ClickUp : espace **Projet 30 - AGRO-FROID**, folder **Planning M1-M5**, 5 listes, 42 tâches.
 

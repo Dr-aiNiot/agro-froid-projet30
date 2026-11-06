@@ -3,6 +3,7 @@
 Agent hybride RAG vectoriel + knowledge graph pour décider d'un retrait ou d'un rappel de lots en moins de 30 minutes.
 
 - **Dépôt GitHub** : https://github.com/Dr-aiNiot/agro-froid-projet30
+- **Drive (livrables)** : https://drive.google.com/drive/u/2/folders/1Qqt_aieE6jwBaeMkLvPxduOkUjQJfArD
 - **Board / planning** : [PROJECT_BOARD.md](PROJECT_BOARD.md)
 - **Rôles** : [ROLES.md](ROLES.md)
 - **Invitations** : [COLLABORATORS.md](COLLABORATORS.md)

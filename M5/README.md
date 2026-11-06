@@ -73,3 +73,7 @@ python src/run_demo.py                               # 6 cas metier
 ```
 
 Livrables : `docs/Documentation_M5.pdf`, `docs/Agent_Card_M5.pdf`, `docs/Slides_M5.pdf`.
+
+## Chaine complete 3 flux
+
+F1 = `M5_B4_FLUX_COMPLET` (moteur + FusionDB insert_one) → F2 = `M5_HITL_APPROBAT` (find + update_one PENDING→DONE). Détail dans `STATUS.md`.

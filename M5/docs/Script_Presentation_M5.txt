@@ -1,0 +1,69 @@
+# Script de presentation M5 - a apprendre par coeur
+# Durée totale : 2 min 28 s (presentation 2:00 + live test 0:28)
+# Video : M5/docs/Demo_M5_Jury.mp4 (meme mots, meme ordre, meme rythme)
+
+## BLOC 1 - Accroche (0:00 - 0:11)
+
+"Ma partie, c'est l'étape finale du projet AGRO-FROID : transformer un
+incident de chaîne du froid en une décision opposable, et la mettre entre
+les mains d'un humain."
+
+## BLOC 2 - Architecture (0:11 - 0:36)
+
+"Le workflow tourne sur Agentic AI de ABA : cinq nœuds, quatre liens,
+zéro modèle de langage, zéro clé d'API, zéro euro par décision.
+C'est un choix délibéré : un rappel alimentaire ne peut pas être inventé
+par un modèle de langage. Quatre décisions possibles, les quatre prouvées
+au run : retrait, rappel, quarantaine, et escalade."
+
+## BLOC 3 - Moteur (0:36 - 1:04)
+
+"Comment ? Le moteur vérifie chaque ligne de télémétrie signée.
+Un journal falsifié part en quarantaine, et il ne réduit jamais la
+décision. Il recalcule les écarts par chambre : delta et durée.
+Il applique la politique P1 à P6, et il sort un schéma canonique de
+neuf clés, validé à chaque exécution. Si une clé manque, rien ne sort."
+
+## BLOC 4 - HITL (1:04 - 1:27)
+
+"Une fois la décision armée, quatre décisions sur cinq déclenchent une
+porte d'approbation humaine. Le token est signé, à usage unique, et
+expire en trente minutes. Rejouer le token est refusé.
+Le rappel exige en plus un double contrôle.
+En un mot : l'agent prépare, l'humain signe."
+
+## BLOC 5 - Preuves (1:27 - 1:45)
+
+"Résultat mesuré : quarante-deux tests qui passent, dont dix-huit cas
+limites. Quatre décisions prouvées au run sur la plateforme.
+Et si la livraison échoue, une file morte conserve l'événement signé,
+et le rejeu se fait sans re-décision : aucun doublon."
+
+## BLOC 6 - Test en direct (1:45 - 2:06)
+
+"Maintenant, le test en direct. Je rejoue les quatre cas sur le flux
+M5 B4 : nominal, rappel, quarantaine, escalade.
+Chaque cas sort le même contrat : neuf clés, schéma validé,
+HITL requis, et aucun modèle de langage dans la boucle."
+
+## BLOC 7 - Cloture (2:06 - 2:28)
+
+"Enfin, la batterie de tests : quarante-deux tests, tous verts, en moins
+d'une seconde. La décision de départ est reproductible, et la supervision
+humaine est en place. Voilà pour ma partie. Passons à l'orchestration
+complète."
+
+---
+
+## Aides-memoire pour le jour J
+
+Trois phrases "filet de securite" si tu perds le fil :
+1. Reprise = demarre le paragraphe en cours, mot pour mot, depuis la video.
+2. Question "pourquoi pas de LLM ?" -> BLOC 2 : "c'est un choix deliberé,
+   un rappel alimentaire ne peut pas etre invente par un LLM".
+3. Demo qui plante -> "Capture deja realisee" + m5_playground.png.
+
+Ordre des onglets a ouvrir AVANT la presentation :
+1. Agentic AI de ABA - flux M5_B4_DECISION_HITL (canvas)
+2. m5_canvas.png (secours si la plateforme rame)
+3. m5_playground.png (plan B demo)

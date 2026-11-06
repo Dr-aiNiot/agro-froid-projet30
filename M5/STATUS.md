@@ -15,4 +15,16 @@
 | H-07 | Tests B4 et 4 décisions | **Done** | `proofs/test_output.txt` (10/10) |
 | H-08 | Agent Card et runbook | **Done** | `docs/Documentation_M5.pdf` (rôle, contrôles, limites) |
 
+## Flux M5 sur Agentic AI de ABA - LIVRE
+
+| Element | Valeur |
+|---|---|
+| Projet | **Projet 30** (folder `f87f09a0-2c80-46bd-8cd8-8e53a297b12d`) |
+| Workflow | **M5_B4_DECISION_HITL** (`6656f31f-ad1f-4591-b2ef-0d68c8aa6dad`) |
+| Topologie | 5 noeuds / 4 liens : ChatInput > Prompt moteur B4 > Python > Parser > ChatOutput |
+| LLM | **aucun** - moteur deterministe, 0 appel externe, 0 cle API |
+| Export | `01_JSON/M5_B4_DECISION_HITL.json` |
+| Runs | **4/4** : RETRAIT, RAPPEL, QUARANTAINE, ESCALADE - schema 9 cles OK, HITL requis |
+| Preuve | `M5/proofs/platform_runs.json` + `01_JSON/m5_canvas.png` |
+
 **Bilan : 12/12 Done.**

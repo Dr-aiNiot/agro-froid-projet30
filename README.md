@@ -10,6 +10,7 @@ Agent hybride RAG vectoriel + knowledge graph pour décider d'un retrait ou d'un
 - **Cahier des charges** : `00_DOC/Cahier_des_Charges_Projet30_AGRO-FROID.pdf`
 - **Partie M5 (B4 Décision + HITL)** : [M5/README.md](M5/README.md)
 - **Preuves M5** : [M5/proofs/](M5/proofs/)
+- **Workflow M5 sur Agentic AI de ABA** : M5_B4_DECISION_HITL (5 noeuds, 4 cas prouves) - export `01_JSON/M5_B4_DECISION_HITL.json`, preuve `M5/proofs/platform_runs.json`\r
 - **Documentation M5** : `M5/docs/Documentation_M5.pdf`
 - **Slides M5** : `M5/docs/Slides_M5.pdf`
 

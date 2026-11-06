@@ -23,7 +23,7 @@ SECRET = b"AGRO-FROID-DEMO-HMAC-KEY-2026"  # demo only; production: env / vault
 
 REQUIRED = ["incident", "ecarts", "magasins", "lots", "fournisseurs",
             "obligation", "decision", "hitl", "sources"]
-DECISIONS = {"RETRAIT", "RAPPEL", "SURVEILLANCE", "ESCALADE"}
+DECISIONS = {"RETRAIT", "RAPPEL", "QUARANTAINE", "SURVEILLANCE", "ESCALADE"}
 
 
 class M5Error(Exception):
@@ -148,7 +148,7 @@ def decide(pack: dict[str, Any], ecarts: list[dict[str, Any]], cert_ok: bool,
     if pack.get("confidence", 0) < policy["seuils"]["confidence_min"]:
         return "ESCALADE", "E_LOW_CONFIDENCE", False
     if not cert_ok:
-        return "ESCALADE", cert_reason, True
+        return "QUARANTAINE", cert_reason, True
     delta = max(e["delta_c"] for e in ecarts)
     duree = max(e["duree_min"] for e in ecarts)
     if delta >= policy["seuils"]["delta_c"] and duree >= policy["seuils"]["duree_min"]:
@@ -173,7 +173,7 @@ def build_result(pack: dict[str, Any], ecarts: list[dict[str, Any]], decision: s
         "fournisseurs": pack["candidates"]["fournisseurs"],
         "obligation": {"texte": policy["obligation"]["texte"], "delai_h": int(policy["obligation"]["delai_h"])},
         "decision": decision,
-        "hitl": "REQUIS" if decision in {"RETRAIT", "RAPPEL", "ESCALADE"} else "NON_REQUIS",
+        "hitl": "REQUIS" if decision in {"RETRAIT", "RAPPEL", "QUARANTAINE", "ESCALADE"} else "NON_REQUIS",
         "sources": sources[:8],
     }
     validate_result(result)

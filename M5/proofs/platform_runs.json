@@ -1,0 +1,20 @@
+{
+  "platform": "Agentic AI de ABA",
+  "url": "https://stg-agentic.abafusion.ai",
+  "project": "Projet 30",
+  "folder_id": "f87f09a0-2c80-46bd-8cd8-8e53a297b12d",
+  "flow_name": "M5_B4_DECISION_HITL",
+  "flow_id": "6656f31f-ad1f-4591-b2ef-0d68c8aa6dad",
+  "export": "01_JSON/M5_B4_DECISION_HITL.json",
+  "topology": {"nodes": 5, "edges": 4, "chain": ["CHAT-IN", "P-INCODE", "PY-INCHECK", "PARSE-IN", "CHAT-OK"]},
+  "llm_used": false,
+  "date": "2026-11-06",
+  "runs": [
+    {"case": "nominal",     "http": 200, "decision": "RETRAIT",     "motif": "P1_DELTA_DUREE",          "schema_ok": true, "hitl": "REQUIS", "exposure_score": 60.0},
+    {"case": "rappel",      "http": 200, "decision": "RAPPEL",      "motif": "P2_LOT_VENDU",            "schema_ok": true, "hitl": "REQUIS", "exposure_score": 64.8},
+    {"case": "quarantaine", "http": 200, "decision": "QUARANTAINE", "motif": "CERTIFICAT_INVALIDE_F-07", "schema_ok": true, "hitl": "REQUIS", "exposure_score": 60.0},
+    {"case": "escalade",    "http": 200, "decision": "ESCALADE",    "motif": "E_LOW_CONFIDENCE",        "schema_ok": true, "hitl": "REQUIS", "exposure_score": 60.0}
+  ],
+  "verdict": "4/4 decisions conformes au cahier des charges, schema canonique 9 cles valide sur les 4 cas, HITL requis sur les 4 cas.",
+  "note": "Le moteur est deterministe : aucun LLM n'intervient dans la decision de retrait ou de rappel. Le noeud Python porte la logique B4, le prompt ne sert qu'a injecter le code et le cas."
+}

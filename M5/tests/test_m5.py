@@ -59,7 +59,7 @@ class TestM5(unittest.TestCase):
         certs["F-07"]["valid"] = False
         c = write_temp(certs, "certs_invalides")
         out = m5.analyze(DATA / "mock_b2_pack.json", DATA / "mock_telemetry.csv", DATA / "policy.json", c)
-        self.assertEqual(out["result"]["decision"], "ESCALADE")
+        self.assertEqual(out["result"]["decision"], "QUARANTAINE")
         self.assertTrue(out["analysis"]["quarantine"])
         self.assertIn("CERTIFICAT", out["analysis"]["motif"])
 

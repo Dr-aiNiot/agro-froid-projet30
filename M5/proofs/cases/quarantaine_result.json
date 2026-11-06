@@ -22,7 +22,7 @@
     "texte": "ONSSA-retrait",
     "delai_h": 24
   },
-  "decision": "ESCALADE",
+  "decision": "QUARANTAINE",
   "hitl": "REQUIS",
   "sources": [
     "journal_cf3.csv",

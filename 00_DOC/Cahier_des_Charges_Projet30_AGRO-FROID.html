@@ -251,7 +251,7 @@ svg{max-width:100%;height:auto}
 <ul>
   <li>Les données clients sont synthétiques. Aucune carte de fidélité réelle n'est utilisée.</li>
   <li>Le guide ONSSA et le Codex sont des documents publics ; la procédure interne est fictive et clairement étiquetée.</li>
-  <li>La plateforme cible est le fork Langflow/lfx 1.7.0 de STG. Les contraintes connues sont traitées en section 12.4.</li>
+  <li>La plateforme cible est Agentic AI de ABA (ABA Technology, version 1.7.0). Les contraintes connues sont traitées en section 12.4.</li>
   <li>Le jury évalue le raisonnement, la traçabilité et la sécurité, pas la beauté d'un dashboard.</li>
 </ul>
 
@@ -1360,7 +1360,7 @@ Score     = min(100, 100 × E_lot / E_max)</pre>
   <tr><td>J22</td><td>Tests et CI/CD</td><td>Tests unitaires, intégration, E2E, GitHub Actions</td><td>Rapport de 60 tests</td></tr>
   <tr><td>J23</td><td>Gouvernance, Agent Cards, SemVer</td><td>5 Agent Cards, versions, runbook NOMINAL/INCIDENT</td><td>Dossier de gouvernance</td></tr>
   <tr><td>J24</td><td>Déploiement et MLOps</td><td>API temps réel pour la décision, batch pour l'ingestion, Docker, monitoring</td><td>Compose + healthcheck</td></tr>
-  <tr><td>J25</td><td>Mini-projet FastAPI/LangGraph</td><td>Wrapper API, tests, Docker, logs JSON, i18n FR/EN</td><td>Repo + CI</td></tr>
+  <tr><td>J25</td><td>Mini-projet FastAPI/workflow</td><td>Wrapper API, tests, Docker, logs JSON, i18n FR/EN</td><td>Repo + CI</td></tr>
   <tr><td>J26</td><td>Threat modeling, OWASP/ATLAS, goal guarding</td><td>Threat model, B3, system message immuable, juge métacognitif</td><td>Dossier sécurisé</td></tr>
   <tr><td>J27</td><td>Red Team</td><td>25 cas, 6 familles, mesure V0</td><td>Rapport avant</td></tr>
   <tr><td>J28</td><td>Blue Team, gates</td><td>B3/B4, DLP, HITL, mesure V1</td><td>Rapport après</td></tr>
@@ -1389,7 +1389,7 @@ Score     = min(100, 100 × E_lot / E_max)</pre>
 
 <h3>11.5 Ce que le projet n'utilise pas, et pourquoi</h3>
 <table><thead><tr><th style="width:24%">Brique du cours</th><th style="width:36%">Pourquoi elle n'est pas centrale</th><th style="width:40%">Compensation</th></tr></thead><tbody>
-  <tr><td>CrewAI ou AutoGen en runtime</td><td>La plateforme impose Langflow et RunFlow ; ajouter un framework créerait deux orchestrateurs</td><td>Patterns J16 transposés en flux, contrats explicites, Agent Cards</td></tr>
+  <tr><td>CrewAI ou AutoGen en runtime</td><td>La plateforme Agentic AI de ABA impose les workflows et RunFlow ; ajouter un framework créerait deux orchestrateurs</td><td>Patterns J16 transposés en flux, contrats explicites, Agent Cards</td></tr>
   <tr><td>Fine-tuning</td><td>Pas de données labellisées suffisantes, pas de budget</td><td>Prompts T=0, few-shot, jeu doré, régression</td></tr>
   <tr><td>Neo4j</td><td>Aucune instance disponible, intégration plateforme lourde</td><td>Graphe en collections Mongo, traversée Python, même modèle de données</td></tr>
   <tr><td>LangSmith en production</td><td>Clé et quota non garantis pendant la démo</td><td>Trace native compatible, export si une clé est fournie</td></tr>
@@ -1401,7 +1401,7 @@ Score     = min(100, 100 × E_lot / E_max)</pre>
 
 <h3>12.1 Vue de la stack</h3>
 <table><thead><tr><th style="width:16%">Couche</th><th style="width:24%">Choix</th><th style="width:14%">Version</th><th style="width:46%">Rôle</th></tr></thead><tbody>
-  <tr><td>Orchestration</td><td>Agentic AI Platform (fork Langflow/lfx)</td><td>1.7.0</td><td>5 flux, RunFlow, playground, export JSON</td></tr>
+  <tr><td>Orchestration</td><td>Agentic AI de ABA</td><td>1.7.0</td><td>5 flux, RunFlow, playground, export JSON</td></tr>
   <tr><td>LLM</td><td>OpenRouter <code>openai/gpt-4o-mini</code></td><td>T=0</td><td>Plan, synthèse, classification, rédaction</td></tr>
   <tr><td>LLM de secours</td><td><code>meta-llama/llama-3.1-8b-instruct</code></td><td>T=0</td><td>Si le modèle principal est indisponible</td></tr>
   <tr><td>Embeddings</td><td>Google <code>gemini-embedding-001</code></td><td>768 dims</td><td>Vectorisation des chunks et des requêtes</td></tr>
@@ -1720,7 +1720,7 @@ Score     = min(100, 100 × E_lot / E_max)</pre>
 <h3>15.1 Livrables</h3>
 <table><thead><tr><th style="width:6%">#</th><th style="width:30%">Livrable</th><th style="width:26%">Format</th><th style="width:18%">Propriétaire</th><th style="width:20%">Échéance</th></tr></thead><tbody>
   <tr><td>L1</td><td>Cahier des charges et contrats</td><td>PDF + JSON Schema</td><td>M1</td><td>J1</td></tr>
-  <tr><td>L2</td><td>5 flux importables</td><td>JSON Langflow</td><td>Équipe</td><td>J4</td></tr>
+  <tr><td>L2</td><td>5 flux importables</td><td>JSON Agentic AI</td><td>Équipe</td><td>J4</td></tr>
   <tr><td>L3</td><td>Jeu de données et manifeste</td><td>CSV, JSON, PDF</td><td>M2</td><td>J2</td></tr>
   <tr><td>L4</td><td>Cockpit et API</td><td>Streamlit, Python</td><td>M1</td><td>J4</td></tr>
   <tr><td>L5</td><td>Jeu doré 100 cas + résultats</td><td>JSON, HTML</td><td>M3, M5</td><td>J6</td></tr>

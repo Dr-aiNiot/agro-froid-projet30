@@ -11,12 +11,12 @@
       "L-8842"
     ],
     "status": "PENDING",
-    "idempotency_key": "OUT-ddbcc23fda1f"
+    "idempotency_key": "OUT-371bbdfc065b"
   },
   {
     "id": "OUT-002",
     "type": "QUALITY_DOSSIER",
     "status": "PENDING",
-    "idempotency_key": "DOS-ddbcc23fda1f"
+    "idempotency_key": "DOS-371bbdfc065b"
   }
 ]

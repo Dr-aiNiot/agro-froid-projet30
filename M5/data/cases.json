@@ -1,0 +1,9 @@
+{
+  "version": "M5-CASES-1.0",
+  "cases": {
+    "nominal":     {"pack": "mock_b2_pack.json",        "telemetry": "mock_telemetry.csv", "certificates": "certificates.json",           "decision_attendue": "RETRAIT"},
+    "rappel":      {"pack": "pack_rappel.json",         "telemetry": "mock_telemetry.csv", "certificates": "certificates.json",           "decision_attendue": "RAPPEL"},
+    "quarantaine": {"pack": "mock_b2_pack.json",        "telemetry": "mock_telemetry.csv", "certificates": "certificates_invalides.json", "decision_attendue": "QUARANTAINE"},
+    "escalade":    {"pack": "pack_low_confidence.json", "telemetry": "mock_telemetry.csv", "certificates": "certificates.json",           "decision_attendue": "ESCALADE"}
+  }
+}

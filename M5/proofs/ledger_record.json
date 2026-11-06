@@ -7,8 +7,8 @@
   "actor": "U-042",
   "actor_role": "QUALITY_MANAGER",
   "reason": "delta 4,2 C pendant 190 min, 2 lots, 2 magasins",
-  "nonce": "a17f5673a5c34921",
-  "decided_at": "2026-11-06T02:27:46.743184+00:00",
+  "nonce": "b8f45fc09c4afe7d",
+  "decided_at": "2026-11-06T11:41:48.914168+00:00",
   "prev_hash": "GENESIS",
-  "record_hash": "ddbcc23fda1f69260de30c2b8f07dd8eb27c06f32e85a681b8c5c5c081c41576"
+  "record_hash": "371bbdfc065b3c463659439db18ec6a1aa37e556133e7ac7c60429071d3926ab"
 }

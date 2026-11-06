@@ -71,7 +71,7 @@ def main() -> int:
     certs = json.loads(CERTS.read_text(encoding="utf-8"))
     certs["F-07"]["valid"] = False
     (DATA / "certificates_invalides.json").write_text(json.dumps(certs, ensure_ascii=False, indent=2), encoding="utf-8")
-    analyze_case("certificat_invalide", certs_path=DATA / "certificates_invalides.json")
+    analyze_case("quarantaine", certs_path=DATA / "certificates_invalides.json")
 
     pack_low = json.loads(PACK.read_text(encoding="utf-8"))
     pack_low["confidence"] = 0.5
@@ -87,7 +87,7 @@ def main() -> int:
         ("R-02", "Delta et duree recalcules", "test_01_nominal_retrait", "analysis_nominal.json", "PASS"),
         ("R-03", "Politique P1 retrait", "test_01_nominal_retrait", "cases/nominal_analysis.json", "PASS"),
         ("R-04", "Rappel si lot vendu", "test_02_rappel_si_lot_vendu", "cases/rappel_result.json", "PASS"),
-        ("R-05", "Certificat invalide -> escalade", "test_03_certificat_invalide_quarantaine", "cases/certificat_invalide_result.json", "PASS"),
+        ("R-05", "Certificat invalide -> quarantaine", "test_03_certificat_invalide_quarantaine", "cases/quarantaine_result.json", "PASS"),
         ("R-06", "Confiance basse -> escalade", "test_04_confiance_basse_escalade", "cases/confiance_basse_result.json", "PASS"),
         ("R-07", "Token modifie rejete", "test_05_token_modifie_rejete", "proofs/test_output.txt", "PASS"),
         ("R-08", "Token expire rejete", "test_06_token_expire_rejete", "proofs/test_output.txt", "PASS"),

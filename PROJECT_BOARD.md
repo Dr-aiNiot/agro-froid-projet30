@@ -10,7 +10,7 @@ Board de secours GitHub (le Project v2 n'est pas activé faute de scope `project
 
 | Backlog | Ready | In progress | Review | Done |
 |---|---|---|---|---|
-| M1 : 6 tâches | M2 : 8 · M3 : 8 · M4 : 8 | M5 : H-08, D-09, D-10 | — | **M5 : 9 tâches** |
+| M1 : 6 tâches | M2 : 8 · M3 : 8 · M4 : 8 | — | — | **M5 : 12 tâches** |
 
 ## M5 — B4 Décision + HITL (Driss)
 
@@ -23,11 +23,11 @@ Board de secours GitHub (le Project v2 n'est pas activé faute de scope `project
 | H-05 Commit, ledger, outbox, idempotence | #39 | **Done** | `M5/proofs/ledger_record.json` |
 | H-06 Sources, citations, refus | #40 | **Done** | `M5/proofs/result_nominal.json` |
 | H-07 Tests B4 + 4 décisions | #41 | **Done** | `M5/proofs/test_output.txt` (10/10) |
-| H-08 Agent Card + runbook | #42 | In progress | `M5/docs/Documentation_M5.pdf` |
+| H-08 Agent Card + runbook | #42 | **Done** | `M5/docs/Documentation_M5.pdf` |
 | D-01 Contrats + schéma | #1 | **Done** | `M5/src/m5_b4.py` |
 | D-05 API HITL | #5 | **Done** | `M5/src/m5_b4.py` · `Ledger.commit` |
-| D-09 Démo / captures | #9 | In progress | `M5/docs/Slides_M5.pdf` |
-| D-10 Dossier M5 | #10 | In progress | `M5/docs/Documentation_M5.pdf` |
+| D-09 Démo / captures | #9 | **Done** | `M5/docs/Slides_M5.pdf` |
+| D-10 Dossier M5 | #10 | **Done** | `M5/docs/Documentation_M5.pdf` |
 
 ## M1 à M4 — état
 

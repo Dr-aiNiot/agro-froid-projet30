@@ -12,11 +12,11 @@ Agent hybride RAG vectoriel + knowledge graph pour décider d'un retrait ou d'un
 - **Documentation M5** : `M5/docs/Documentation_M5.pdf`
 - **Slides M5** : `M5/docs/Slides_M5.pdf`
 
-## Statut au 06/11/2026 02:15
+## Statut au 06/11/2026 03:40
 
 | Lot | Propriétaire | Statut | Preuve |
 |---|---|---|---|
-| M5 — B4 Décision + HITL | Driss (M5) | **Tests 10/10 OK** | `M5/proofs/test_output.txt` |
+| M5 — B4 Décision + HITL | Driss (M5) | **12/12 Done · 10/10 tests** | `M5/proofs/` + `M5/docs/` |
 | M1 — B0 Orchestration + front | Ayman (M1) | Backlog | Issues `flow:B0` |
 | M2 — B1 Ingestion + KG | Fatima (M2) | Backlog | Issues `flow:B1` |
 | M3 — B2 Retrieval hybride | Amal (M3) | Backlog | Issues `flow:B2` |

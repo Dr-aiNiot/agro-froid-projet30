@@ -1,0 +1,39 @@
+name: M5 - tests B4
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "M5/**"
+      - ".github/workflows/m5-tests.yml"
+  pull_request:
+    paths:
+      - "M5/**"
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: 42 tests + preuve outbox
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Tests unitaires (contrat, 18 cas limites, outbox, HITL)
+        run: python -m unittest discover -s M5/tests -p "test_*.py" -v
+
+      - name: Preuve outbox / DLQ / rejeu
+        run: python M5/src/run_outbox_demo.py
+
+      - name: Preuve des 4 decisions
+        run: python M5/src/run_demo.py
+
+      - name: Publier les preuves
+        uses: actions/upload-artifact@v4
+        with:
+          name: m5-proofs
+          path: M5/proofs/
+          retention-days: 30

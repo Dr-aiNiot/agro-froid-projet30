@@ -4,7 +4,9 @@
 
 Le dépôt est **public** : https://github.com/Dr-aiNiot/agro-froid-projet30
 
-Les 4 invitations ont été envoyées manuellement par Driss. Statut au 06/11/2026 02:00 : **Pending invite**.
+Les 4 invitations ont été envoyées manuellement par Driss. Statut vérifié le 06/11/2026 12:55 : **0 acceptée, 4 pending**.
+
+Les 4 invitations ont été **renvoyées le 06/11/2026 à 12:50 UTC** (suppression puis nouvelle invitation) pour déclencher un nouvel e-mail de rappel. Issue d'onboarding avec mention des 4 comptes : [#44](https://github.com/Dr-aiNiot/agro-froid-projet30/issues/44).
 
 | Membre | GitHub | Email | Statut |
 |---|---|---|---|
@@ -31,3 +33,16 @@ Tâches : 42 créées.
 Membres du workspace : Ayman (`112545842`), Amal (`112545829`), Driss (`112546698`), Fatima (`112632086`), Salaheddine (`314503995`).
 
 **Invitations ClickUp envoyées le 06/11/2026 à 03:38** depuis l'UI (l'API refuse l'invitation sur ce plan : `Team must be on enterprise plan`). Fatima (`112632086`) et Salaheddine (`314503995`) sont membres du workspace. Les 8 tâches M2 et les 8 tâches M4 leur sont assignées.
+
+Verification du 06/11/2026 12:55 :
+
+| Membre | ClickUp | Compte actif | Tâches |
+|---|---|---|---|
+| Ayman Dadda | `112545842` | oui (derniere activite 11/2026) | M1 : 6 |
+| Amal Ikhmim | `112545829` | oui (derniere activite 06/11) | M3 : 8 |
+| Salaheddine Khalf | `314503995` | oui (derniere activite 06/11) | M4 : 8 |
+| Fatima Saadane | `112632086` | **non - invitation non acceptee** (aucune connexion) | M2 : 8 |
+
+Fatima apparait comme « Deja sur l'environnement de travail » : son invitation est donc bien creee, mais son compte n'a jamais ete active. Relance possible uniquement par elle (e-mail d'invitation ClickUp), aucun renvoi automatique n'est disponible sur ce plan.
+
+Chaque tache ClickUp porte desormais le lien de son issue GitHub dans sa description (42/42), plus le chemin de preuve pour H-01, H-05 et H-08.

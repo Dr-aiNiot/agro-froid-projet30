@@ -37,7 +37,7 @@
 - Espace **Projet 30 - AGRO-FROID** cree.
 - Folder **Planning M1-M5**, 5 listes, 42 taches.
 - 12 taches M5 passees en **complete**.
-- Fatima et Salaheddine : invitation manuelle requise (API ClickUp Enterprise).
+- Fatima et Salaheddine : **invitations ClickUp envoyées**, membres ajoutés et tâches M2/M4 assignées.
 
 ## Reste a faire (hors M5)
 

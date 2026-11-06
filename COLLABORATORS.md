@@ -28,14 +28,6 @@ Folder : **Planning M1-M5**
 Listes : M1-B0, M2-B1, M3-B2, M4-B3, M5-B4
 Tâches : 42 créées.
 
-Membres déjà dans le workspace : Ayman (`112545842`), Amal (`112545829`), Driss (`112546698`).
+Membres du workspace : Ayman (`112545842`), Amal (`112545829`), Driss (`112546698`), Fatima (`112632086`), Salaheddine (`314503995`).
 
-**Fatima et Salaheddine ne sont pas encore membres du workspace ClickUp.** L'API ClickUp refuse l'invitation (`Team must be on enterprise plan`). Invitation à faire manuellement :
-
-1. Ouvrir le workspace **GenAIoT_Casablanca_P2_Gr1**.
-2. **Settings → People → Invite**.
-3. Ajouter `saadanefatima23@gmail.com` et `genaiotcasa@gmail.com`.
-4. Rôle : Member.
-5. Envoyer.
-
-Ensuite, les tâches M2/M4 pourront leur être assignées dans ClickUp.
+**Invitations ClickUp envoyées le 06/11/2026 à 03:38** depuis l'UI (l'API refuse l'invitation sur ce plan : `Team must be on enterprise plan`). Fatima (`112632086`) et Salaheddine (`314503995`) sont membres du workspace. Les 8 tâches M2 et les 8 tâches M4 leur sont assignées.

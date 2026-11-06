@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>M5 — Documentation technique</title><style>
+:root{--navy:#0b1f3a;--orange:#f59e0b;--ink:#1f2937;--muted:#5b6778;--line:#d8dee8;--bg:#f6f8fb;--green:#0f766e;--red:#b91c1c}
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff}
+body{font-family:"Segoe UI","Calibri",Arial,sans-serif;font-size:9.1pt;line-height:1.36;color:var(--ink)}
+@page{size:A4;margin:14mm 13mm 14mm 13mm}
+@media print{.page{break-after:page}.page:last-child{break-after:auto}h2,h3{break-after:avoid}tr{break-inside:avoid}}
+.page{min-height:250mm;position:relative}
+h1{font-size:22pt;color:var(--navy);margin:0 0 4px;line-height:1.1}
+h2{font-size:14pt;color:var(--navy);margin:14px 0 6px;padding:6px 0 6px 10px;border-left:5px solid var(--orange);background:linear-gradient(90deg,#eef3f9,#fff)}
+h3{font-size:11pt;color:var(--navy);margin:10px 0 4px}
+p{margin:0 0 6px}ul,ol{margin:3px 0 6px 16px;padding:0}li{margin:1px 0}
+table{width:100%;border-collapse:collapse;margin:5px 0 8px;font-size:7.9pt}
+th{background:var(--navy);color:#fff;text-align:left;padding:4px 5px;font-weight:600}
+td{border-bottom:1px solid var(--line);padding:3px 5px;vertical-align:top}
+tr:nth-child(even) td{background:#fafbfd}
+code,pre{font-family:Consolas,monospace}code{font-size:7.8pt;background:#eef2f7;padding:1px 3px;border-radius:2px}
+pre{background:var(--navy);color:#e7eef8;padding:7px;font-size:7pt;line-height:1.35;white-space:pre-wrap;overflow-wrap:anywhere;border-radius:3px}
+.kicker{font-size:7.6pt;letter-spacing:1.6px;color:#b45309;font-weight:700;text-transform:uppercase}
+.hero{background:linear-gradient(150deg,#0b1f3a,#1b3760);color:#fff;padding:16px 18px;border-radius:5px;margin-bottom:10px}
+.hero h1{color:#fff;font-size:24pt;margin:2px 0}.hero .sub{color:#dbe7f7;font-size:10.5pt}
+.badge{display:inline-block;border:1px solid rgba(255,255,255,.35);border-radius:12px;padding:2px 8px;font-size:7.2pt;margin:2px 3px 0 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.card{border:1px solid var(--line);border-radius:4px;padding:7px;background:#fff}
+.card .n{font-size:16pt;font-weight:700;color:var(--navy);display:block;line-height:1.1}
+.card .l{font-size:6.8pt;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.callout{border-left:4px solid var(--orange);background:#fff8eb;padding:7px 9px;margin:7px 0;border-radius:0 3px 3px 0}
+.callout.ok{border-left-color:var(--green);background:#ecfdf5}.callout.red{border-left-color:var(--red);background:#fef2f2}
+.flow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:6px 0 8px}
+.step{border:1px solid #94a3b8;background:#f8fafc;border-radius:4px;padding:5px 6px;font-size:7.4pt;min-width:72px;text-align:center}
+.step.hot{border-color:var(--orange);background:#fff8eb}.step.ok{border-color:var(--green);background:#ecfdf5}
+.arrow{color:var(--orange);font-weight:700}
+.small{font-size:7.4pt;color:var(--muted)}
+.footer{position:absolute;bottom:0;left:0;right:0;font-size:6.8pt;color:#8391a5;border-top:1px solid var(--line);padding-top:2px;display:flex;justify-content:space-between}
+</style></head><body>
+
+<section class="page">
+<div class="hero">
+  <div class="kicker">Projet 30 · AGRO-FROID · M5</div>
+  <h1>B4 — Décision, exposition et HITL</h1>
+  <div class="sub">Documentation technique · preuves · audit fonctionnel · traçabilité</div>
+  <div style="margin-top:6px">
+    <span class="badge">M5 · Driss</span><span class="badge">10/10 tests</span>
+    <span class="badge">JSON 9 clés</span><span class="badge">0 PII</span><span class="badge">HITL signé</span>
+  </div>
+</div>
+
+<h2>1. Rôle et périmètre</h2>
+<p><b>M5 = B4</b> : transformer un pack de preuves B2 en une décision traçable, un JSON canonique, un calcul d'exposition et un package HITL signé. B4 ne planifie pas, ne cherche pas et ne rédige pas : il vérifie, calcule, applique la politique et prépare l'action humaine.</p>
+<table>
+<tr><th style="width:22%">Élément</th><th>Contenu</th></tr>
+<tr><td>Entrée</td><td><code>mock_b2_pack.json</code> : ancre I-2026-11, 2 lots, 2 magasins, F-07, 3 preuves, confiance 0,87 ; télémétrie signée ; politique P1-P6 ; certificats.</td></tr>
+<tr><td>Traitement</td><td>Vérification HMAC, recalcul delta/durée, contrôle certificat, politique, exposition, validation du schéma, token HITL, ledger, outbox.</td></tr>
+<tr><td>Sortie</td><td>JSON canonique 9 clés + <code>analysis</code> (motif, exposition, quarantaine) + <code>hitl</code> (token, expiry, rôle, double contrôle).</td></tr>
+<tr><td>Décision nominale</td><td><b>RETRAIT</b> · HITL <b>REQUIS</b> · 2 lots · 2 magasins · fournisseur F-07</td></tr>
+</table>
+
+<div class="grid3">
+  <div class="card"><span class="n">10/10</span><span class="l">Tests fonctionnels</span></div>
+  <div class="card"><span class="n">4,2 °C</span><span class="l">Delta recalculé / 190 min</span></div>
+  <div class="card"><span class="n">0</span><span class="l">PII en sortie</span></div>
+</div>
+
+<div class="callout ok"><b>Règle de non-réduction.</b> Une ligne de journal non signée ne peut jamais réduire la sévérité. Le test 09 le prouve : le faux log à 4,0 °C est mis en quarantaine, la décision reste RETRAIT ; si tout le journal est faux, B4 escalade.</div>
+
+<h2>2. Entrées / sorties attendues</h2>
+<table>
+<tr><th style="width:24%">Champ</th><th style="width:16%">Type</th><th>Valeur / contrainte</th></tr>
+<tr><td><code>result.incident</code></td><td>string</td><td><code>I-2026-11</code> · format <code>I-AAAA-MM</code></td></tr>
+<tr><td><code>result.ecarts[]</code></td><td>array</td><td><code>{"chambre":"CF-3","delta_c":4.2,"duree_min":190}</code></td></tr>
+<tr><td><code>result.magasins / lots / fournisseurs</code></td><td>array</td><td>G-12, G-19 / L-8841, L-8842 / F-07</td></tr>
+<tr><td><code>result.obligation</code></td><td>object</td><td><code>{"texte":"ONSSA-retrait","delai_h":24}</code></td></tr>
+<tr><td><code>result.decision / hitl</code></td><td>enum</td><td>RETRAIT / RAPPEL / SURVEILLANCE / ESCALADE · REQUIS / NON_REQUIS</td></tr>
+<tr><td><code>result.sources[]</code></td><td>array</td><td>1 à 8 · <code>journal_cf3.csv</code>, <code>guide_onssa.pdf#p12</code>, <code>procedure_interne.pdf#p4</code></td></tr>
+</table>
+<pre>{"incident":"I-2026-11","ecarts":[{"chambre":"CF-3","delta_c":4.2,"duree_min":190}],"magasins":["G-12","G-19"],"lots":["L-8841","L-8842"],"fournisseurs":["F-07"],"obligation":{"texte":"ONSSA-retrait","delai_h":24},"decision":"RETRAIT","hitl":"REQUIS","sources":["journal_cf3.csv","guide_onssa.pdf#p12","procedure_interne.pdf#p4"]}</pre>
+<div class="footer"><span>M5 — Documentation technique</span><span>Page 1 / 5</span></div>
+</section>
+
+<section class="page">
+<h2>3. Architecture B4 et machine HITL</h2>
+<div class="flow">
+  <div class="step">Pack B2<br>preuves</div><span class="arrow">→</span>
+  <div class="step hot">Vérifier<br>télémétrie HMAC</div><span class="arrow">→</span>
+  <div class="step">Recalcul<br>delta / durée</div><span class="arrow">→</span>
+  <div class="step">Certificat<br>fournisseur</div><span class="arrow">→</span>
+  <div class="step">Politique<br>P1-P6</div><span class="arrow">→</span>
+  <div class="step">Exposition<br>score</div><span class="arrow">→</span>
+  <div class="step ok">JSON<br>canonique</div><span class="arrow">→</span>
+  <div class="step hot">Package<br>HITL signé</div>
+</div>
+<p>Le chemin est volontairement linéaire et déterministe. Aucun LLM n'intervient dans B4. Les seules sources de vérité sont la télémétrie vérifiée, la politique versionnée et le registre des certificats.</p>
+
+<table>
+<tr><th style="width:22%">Contrôle</th><th>Mise en œuvre</th><th style="width:24%">Preuve</th></tr>
+<tr><td>Authenticité</td><td>HMAC-SHA256 par ligne, clé identifiée, séquence, quarantaine des lignes invalides</td><td><code>cases/falsifie_analysis.json</code></td></tr>
+<tr><td>Non-réduction</td><td>Un journal non fiable ne peut pas annuler une alerte ; s'il est la seule source, escalade</td><td>test 09</td></tr>
+<tr><td>Certificat</td><td>Présence, validité, émetteur, liaison certificat ↔ lot</td><td>test 03</td></tr>
+<tr><td>Politique</td><td>P1 delta ≥ 2 °C et durée ≥ 120 min ; P2 lot vendu ; P3 certificat ; P5 confiance &lt; 0,60</td><td><code>cases/*_analysis.json</code></td></tr>
+<tr><td>HITL</td><td>Token signé, hash du résultat, nonce, expiration 30 min, rôle, double contrôle si RAPPEL</td><td><code>hitl_package.json</code></td></tr>
+<tr><td>Ledger</td><td>Enregistrement append-only, hash du précédent, acteur, motif</td><td><code>ledger_record.json</code></td></tr>
+</table>
+
+<h3>Machine à états HITL</h3>
+<table>
+<tr><th style="width:16%">État</th><th style="width:34%">Déclencheur</th><th>Transition</th></tr>
+<tr><td>PROPOSED</td><td>B4 a calculé la décision</td><td>HITL requis → PENDING_HITL ; sinon COMMITTED</td></tr>
+<tr><td>PENDING_HITL</td><td>Package émis</td><td>Approbation → APPROVED ; rejet → REJECTED ; 30 min → EXPIRED</td></tr>
+<tr><td>APPROVED</td><td>Token valide, rôle correct, nonce neuf</td><td>Écriture ledger + outbox → COMMITTED</td></tr>
+<tr><td>REJECTED / EXPIRED</td><td>Motif ou délai</td><td>Nouveau package possible, nonce différent</td></tr>
+</table>
+<div class="callout red"><b>Anti-rejeu.</b> Le token contient le hash du résultat et un nonce à usage unique. Modifier le token, rejouer le token ou changer le résultat produit une erreur : <code>SIGNATURE_INVALIDE</code>, <code>TOKEN_DEJA_UTILISE</code> ou <code>RESULTAT_MODIFIE</code>.</div>
+
+<h3>Exposition</h3>
+<p><code>E_lot = quantite × f_magasin × f_vente × f_delai</code>. Score nominal : <b>60.0/100</b> (ELEVE), 2 lots, 2 magasins, 128 clients tokenisés. Le score sert à prioriser ; la décision vient de la politique.</p>
+<div class="footer"><span>M5 — Documentation technique</span><span>Page 2 / 5</span></div>
+</section>
+
+<section class="page">
+<h2>4. Stack technique et choix</h2>
+<table>
+<tr><th style="width:16%">Technologie</th><th style="width:20%">Rôle</th><th style="width:30%">Pourquoi</th><th style="width:18%">Alternative</th><th style="width:16%">Risque</th></tr>
+<tr><td>Python 3.12</td><td>Moteur B4</td><td>Standard, lisible, testable, aucune dépendance</td><td>Node.js</td><td>Faible</td></tr>
+<tr><td>HMAC-SHA256</td><td>Signature lignes + token</td><td>Standard, rapide, constant-time compare</td><td>Ed25519</td><td>Clé de démo en dur ; production = coffre</td></tr>
+<tr><td>JSON / CSV</td><td>Contrats et données</td><td>Formats du sujet, auditables</td><td>Protobuf</td><td>Faible</td></tr>
+<tr><td>unittest</td><td>10 tests fonctionnels</td><td>Zéro installation, reproductible</td><td>pytest</td><td>Faible</td></tr>
+<tr><td>GitHub</td><td>Repo, issues, board</td><td>Traçabilité, revue, historique</td><td>ClickUp seul</td><td>Invitations pending</td></tr>
+<tr><td>ClickUp</td><td>Planning M1-M5</td><td>Suivi d'avancement équipe</td><td>Jira</td><td>API invite Enterprise</td></tr>
+<tr><td>Edge headless</td><td>PDF doc + slides</td><td>Rendu identique au HTML, zéro installation</td><td>LaTeX</td><td>Faible</td></tr>
+</table>
+
+<h3>Décisions structurantes</h3>
+<ol>
+<li><b>B4 déterministe.</b> Un LLM peut proposer, pas calculer un delta, une exposition ou une signature. T=0 ne suffit pas ; le code est la source de vérité.</li>
+<li><b>Pas de dépendance externe.</b> Le jury peut rejouer M5 avec Python seul, sans clé API, sans réseau, sans Mongo.</li>
+<li><b>HITL structurel.</b> Le token n'est pas un bouton : il est signé, lié au résultat, expirant et à usage unique.</li>
+<li><b>Preuves reproductibles.</b> Chaque test écrit un artifact JSON et un hash. La matrice de traçabilité relie exigence, test et preuve.</li>
+</ol>
+
+<div class="callout"><b>Ce qui est mocké et ce qui ne l'est pas.</b> Le pack B2, la télémétrie et les certificats sont des mocks contrôlés. Le code B4, la politique, le token, le ledger et les tests sont réels. Le mock permet de tester sans attendre B1/B2/B0.</div>
+
+<h3>Coût et performance</h3>
+<table>
+<tr><th>Poste</th><th>Valeur</th></tr>
+<tr><td>Dépendances</td><td>0 (stdlib Python)</td></tr>
+<tr><td>Temps des 10 tests</td><td>0,067 s</td></tr>
+<tr><td>Coût LLM B4</td><td>0 € (aucun appel LLM)</td></tr>
+<tr><td>Artefacts de preuve</td><td>21 fichiers JSON/CSV/TXT</td></tr>
+</table>
+<div class="footer"><span>M5 — Documentation technique</span><span>Page 3 / 5</span></div>
+</section>
+
+<section class="page">
+<h2>5. Audit fonctionnel et traçabilité</h2>
+<table>
+<tr><th style="width:8%">ID</th><th style="width:38%">Test</th><th style="width:34%">Attendu</th><th style="width:20%">Résultat</th></tr>
+<tr><td>T01</td><td>Nominal : RETRAIT, 2 lots, 2 magasins, F-07</td><td>JSON 9 clés, HITL REQUIS</td><td><b>PASS</b></td></tr>
+<tr><td>T02</td><td>Lot vendu</td><td>RAPPEL + double contrôle</td><td><b>PASS</b></td></tr>
+<tr><td>T03</td><td>Certificat invalide</td><td>ESCALADE + quarantaine</td><td><b>PASS</b></td></tr>
+<tr><td>T04</td><td>Confiance &lt; 0,60</td><td>ESCALADE</td><td><b>PASS</b></td></tr>
+<tr><td>T05</td><td>Token modifié</td><td>SIGNATURE_INVALIDE</td><td><b>PASS</b></td></tr>
+<tr><td>T06</td><td>Token expiré</td><td>TOKEN_EXPIRE</td><td><b>PASS</b></td></tr>
+<tr><td>T07</td><td>Rejeu du token</td><td>TOKEN_DEJA_UTILISE</td><td><b>PASS</b></td></tr>
+<tr><td>T08</td><td>Schéma invalide</td><td>SchemaError</td><td><b>PASS</b></td></tr>
+<tr><td>T09</td><td>Journal falsifié / tout faux</td><td>RETRAIT maintenu / ESCALADE</td><td><b>PASS</b></td></tr>
+<tr><td>T10</td><td>Aucune PII en sortie</td><td>0 token, 0 email, 0 carte</td><td><b>PASS</b></td></tr>
+</table>
+<p><b>Résultat global : 10/10 PASS · OK</b> · commande <code>python -m unittest discover -s tests -p test_*.py -v</code>.</p>
+
+<h3>Matrice de traçabilité</h3>
+<table>
+<tr><th style="width:10%">Exigence</th><th style="width:38%">Test</th><th style="width:36%">Preuve</th><th style="width:16%">Statut</th></tr>
+<tr><td>R-01</td><td>Sortie JSON canonique 9 cles</td><td><code>test_01_nominal_retrait</code></td><td><b>result_nominal.json</b></td></tr><tr><td>R-02</td><td>Delta et duree recalcules</td><td><code>test_01_nominal_retrait</code></td><td><b>analysis_nominal.json</b></td></tr><tr><td>R-03</td><td>Politique P1 retrait</td><td><code>test_01_nominal_retrait</code></td><td><b>cases/nominal_analysis.json</b></td></tr><tr><td>R-04</td><td>Rappel si lot vendu</td><td><code>test_02_rappel_si_lot_vendu</code></td><td><b>cases/rappel_result.json</b></td></tr><tr><td>R-05</td><td>Certificat invalide -> escalade</td><td><code>test_03_certificat_invalide_quarantaine</code></td><td><b>cases/certificat_invalide_result.json</b></td></tr><tr><td>R-06</td><td>Confiance basse -> escalade</td><td><code>test_04_confiance_basse_escalade</code></td><td><b>cases/confiance_basse_result.json</b></td></tr><tr><td>R-07</td><td>Token modifie rejete</td><td><code>test_05_token_modifie_rejete</code></td><td><b>proofs/test_output.txt</b></td></tr><tr><td>R-08</td><td>Token expire rejete</td><td><code>test_06_token_expire_rejete</code></td><td><b>proofs/test_output.txt</b></td></tr><tr><td>R-09</td><td>Rejeu refuse</td><td><code>test_07_rejeu_refuse</code></td><td><b>proofs/test_output.txt</b></td></tr><tr><td>R-10</td><td>Schema invalide rejete</td><td><code>test_08_schema_invalide_rejete</code></td><td><b>proofs/test_output.txt</b></td></tr><tr><td>R-11</td><td>Faux log ne reduit pas la severite</td><td><code>test_09_telemetrie_non_fiable_ne_reduit_pas</code></td><td><b>cases/falsifie_result.json</b></td></tr><tr><td>R-12</td><td>Aucune PII en sortie</td><td><code>test_10_aucune_pii_en_sortie</code></td><td><b>result_nominal.json</b></td></tr><tr><td>R-13</td><td>Ledger et outbox</td><td><code>run_demo</code></td><td><b>ledger_record.json + outbox_records.json</b></td></tr>
+</table>
+<div class="footer"><span>M5 — Documentation technique</span><span>Page 4 / 5</span></div>
+</section>
+
+<section class="page">
+<h2>6. Preuves et résultats</h2>
+<div class="grid">
+<div class="card"><h3 style="margin-top:0">Résultat canonique</h3><pre>{"incident":"I-2026-11","ecarts":[{"chambre":"CF-3","delta_c":4.2,"duree_min":190}],"magasins":["G-12","G-19"],"lots":["L-8841","L-8842"],"fournisseurs":["F-07"],"obligation":{"texte":"ONSSA-retrait","delai_h":24},"decision":"RETRAIT","hitl":"REQUIS","sources":["journal_cf3.csv","guide_onssa.pdf#p12","procedure_interne.pdf#p4"]}</pre></div>
+<div class="card"><h3 style="margin-top:0">Ledger HITL</h3><pre>{"ledger_id":"LED-0001","decision":"RETRAIT","status":"APPROVED","actor":"U-042","actor_role":"QUALITY_MANAGER","result_hash":"sha256:...","nonce":"...","record_hash":"...","prev_hash":"GENESIS"}</pre></div>
+</div>
+
+<p><b>Motif :</b> P1_DELTA_DUREE · <b>Exposition :</b> 60.0/100 (ELEVE) · <b>Lignes non fiables :</b> 0 · <b>Lignes vérifiées :</b> 8</p>
+
+<h3>Empreintes SHA-256</h3>
+<table><tr><th style="width:18%">Hash</th><th>Fichier</th></tr><tr><td><code>d39484fb2ba2a5d0…</code></td><td><code>proofs/analysis_nominal.json</code></td></tr><tr><td><code>34ba7414b9f4ccc6…</code></td><td><code>proofs/audit_log.jsonl</code></td></tr><tr><td><code>b4b744ff72ab68ac…</code></td><td><code>proofs/cases/certificat_invalide_analysis.json</code></td></tr><tr><td><code>86a61786090a75a4…</code></td><td><code>proofs/cases/certificat_invalide_result.json</code></td></tr><tr><td><code>daf0bc1f697c566a…</code></td><td><code>proofs/cases/confiance_basse_analysis.json</code></td></tr></table>
+
+<h3>Limites et suite</h3>
+<ul>
+<li>Le pack B2, la télémétrie et les certificats sont des mocks ; le branchement réel se fait par contrat, sans modifier B4.</li>
+<li>Le token utilise un secret de démonstration ; en production, clé dans un coffre et rotation.</li>
+<li>Le double contrôle RAPPEL est modélisé dans le payload ; l'écran deux acteurs reste à câbler.</li>
+<li>DLQ et outbox sont simulés en JSON ; le retry réel sera branché avec B0.</li>
+</ul>
+
+<h3>Liens</h3>
+<table>
+<tr><td>GitHub</td><td><code>https://github.com/Dr-aiNiot/agro-froid-projet30</code></td></tr>
+<tr><td>Issues M5</td><td><code>https://github.com/Dr-aiNiot/agro-froid-projet30/issues?q=label%3Aflow%3AB4</code></td></tr>
+<tr><td>ClickUp B4</td><td><code>https://app.clickup.com/90152674771/v/li/1200380000011340</code></td></tr>
+<tr><td>Preuves</td><td><code>M5/proofs/</code> · <code>test_report.json</code> · <code>traceability_matrix.csv</code></td></tr>
+</table>
+<div class="callout ok"><b>Verdict M5.</b> B4 est exécutable, testé, traçable et signé. La décision nominale est RETRAIT avec HITL REQUIS ; le faux journal est détecté sans réduire la sévérité ; les tokens modifiés, expirés ou rejoués sont refusés ; aucune PII ne sort.</div>
+<div class="footer"><span>M5 — Documentation technique</span><span>Page 5 / 5</span></div>
+</section>
+</body></html>

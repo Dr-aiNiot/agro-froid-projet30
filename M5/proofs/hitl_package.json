@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "token": "eyJkZWNpc2lvbiI6ICJSRVRSQUlUIiwgImR1YWxfY29udHJvbCI6IGZhbHNlLCAiZXhwaXJlc19hdCI6ICIyMDI2LTExLTA2VDAyOjU3OjQ2LjcyNjkwMiswMDowMCIsICJpbmNpZGVudF9pZCI6ICJJLTIwMjYtMTEiLCAiaXNzdWVkX2F0IjogIjIwMjYtMTEtMDZUMDI6Mjc6NDYuNzI2OTAyKzAwOjAwIiwgIm5vbmNlIjogImExN2Y1NjczYTVjMzQ5MjEiLCAicmVxdWlyZWRfcm9sZSI6ICJRVUFMSVRZX01BTkFHRVIiLCAicmVzdWx0X2hhc2giOiAiMDE4MzE4M2NlMTAxMjAyMmZjNmJmYzBkZjAyZmQ1MTYyYzI3OTg4OWI2NGU5ODczNTVmNjdiNzhkMTBiY2NkZSJ9.NMnLcIrNG5hTKmHiTakfsVfuz_-Rzx1KZYxRol5rYjo",
+  "payload": {
+    "incident_id": "I-2026-11",
+    "decision": "RETRAIT",
+    "result_hash": "0183183ce1012022fc6bfc0df02fd5162c279889b64e987355f67b78d10bccde",
+    "nonce": "a17f5673a5c34921",
+    "issued_at": "2026-11-06T02:27:46.726902+00:00",
+    "expires_at": "2026-11-06T02:57:46.726902+00:00",
+    "required_role": "QUALITY_MANAGER",
+    "dual_control": false
+  },
+  "expires_at": "2026-11-06T02:57:46.726902+00:00",
+  "required_role": "QUALITY_MANAGER",
+  "dual_control": false
+}

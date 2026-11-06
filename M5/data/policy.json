@@ -1,0 +1,7 @@
+{
+  "version": "POL-FROID-1.2",
+  "consignes": {"CF-3": 4.2},
+  "seuils": {"delta_c": 2.0, "duree_min": 120, "confidence_min": 0.6},
+  "obligation": {"texte": "ONSSA-retrait", "delai_h": 24},
+  "exposure": {"seuil_critique": 70, "seuil_eleve": 40}
+}

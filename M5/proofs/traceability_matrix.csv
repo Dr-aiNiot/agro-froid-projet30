@@ -1,0 +1,14 @@
+﻿Requirement;Test;Evidence;Status
+R-01;Sortie JSON canonique 9 cles;test_01_nominal_retrait;result_nominal.json;PASS
+R-02;Delta et duree recalcules;test_01_nominal_retrait;analysis_nominal.json;PASS
+R-03;Politique P1 retrait;test_01_nominal_retrait;cases/nominal_analysis.json;PASS
+R-04;Rappel si lot vendu;test_02_rappel_si_lot_vendu;cases/rappel_result.json;PASS
+R-05;Certificat invalide -> escalade;test_03_certificat_invalide_quarantaine;cases/certificat_invalide_result.json;PASS
+R-06;Confiance basse -> escalade;test_04_confiance_basse_escalade;cases/confiance_basse_result.json;PASS
+R-07;Token modifie rejete;test_05_token_modifie_rejete;proofs/test_output.txt;PASS
+R-08;Token expire rejete;test_06_token_expire_rejete;proofs/test_output.txt;PASS
+R-09;Rejeu refuse;test_07_rejeu_refuse;proofs/test_output.txt;PASS
+R-10;Schema invalide rejete;test_08_schema_invalide_rejete;proofs/test_output.txt;PASS
+R-11;Faux log ne reduit pas la severite;test_09_telemetrie_non_fiable_ne_reduit_pas;cases/falsifie_result.json;PASS
+R-12;Aucune PII en sortie;test_10_aucune_pii_en_sortie;result_nominal.json;PASS
+R-13;Ledger et outbox;run_demo;ledger_record.json + outbox_records.json;PASS

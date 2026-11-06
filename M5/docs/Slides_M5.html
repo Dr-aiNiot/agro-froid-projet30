@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>M5 — Slides</title><style>
+:root{--navy:#0b1f3a;--orange:#f59e0b;--ink:#1f2937;--muted:#5b6778;--line:#d8dee8;--green:#0f766e;--red:#b91c1c}
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff}
+body{font-family:"Segoe UI",Arial,sans-serif;color:var(--ink)}
+@page{size:338mm 190mm;margin:0}
+.slide{width:338mm;height:190mm;padding:12mm 14mm;position:relative;break-after:page;background:#fff;overflow:hidden}
+.slide:last-child{break-after:auto}
+.kicker{font-size:8pt;letter-spacing:2px;color:#b45309;font-weight:700;text-transform:uppercase}
+h1{font-size:30pt;color:var(--navy);margin:4px 0 2px;line-height:1.05}
+h2{font-size:18pt;color:var(--navy);margin:0 0 6px}
+.sub{font-size:12pt;color:var(--muted);margin-bottom:9mm}
+.flow{display:flex;align-items:center;gap:2.5mm;flex-wrap:nowrap;margin:6mm 0}
+.step{border:1px solid #94a3b8;background:#f8fafc;border-radius:2mm;padding:3mm 3.5mm;font-size:9pt;min-width:25mm;text-align:center;line-height:1.3}
+.step.hot{border:2px solid var(--orange);background:#fff8eb}.step.ok{border:2px solid var(--green);background:#ecfdf5}
+.arrow{color:var(--orange);font-size:16pt;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm}
+.card{border:1px solid var(--line);border-radius:2mm;padding:4mm;background:#fff}
+.card .n{display:block;font-size:26pt;font-weight:700;color:var(--navy);line-height:1}
+.card .l{display:block;font-size:8pt;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.two{display:grid;grid-template-columns:1.1fr .9fr;gap:8mm}
+pre{background:var(--navy);color:#e7eef8;padding:5mm;font-size:8pt;line-height:1.4;white-space:pre-wrap;border-radius:2mm;font-family:Consolas,monospace}
+.badge{display:inline-block;border:1px solid var(--orange);color:#b45309;border-radius:10mm;padding:1mm 3mm;font-size:8pt;margin-right:2mm}
+.foot{position:absolute;bottom:5mm;left:14mm;right:14mm;font-size:7pt;color:#8391a5;border-top:1px solid var(--line);padding-top:2mm;display:flex;justify-content:space-between}
+</style></head><body>
+<section class="slide">
+<div class="kicker">Projet 30 · AGRO-FROID · M5</div>
+<h1>B4 — Décider, prouver, faire valider</h1>
+<div class="sub">Du pack de preuves B2 au JSON canonique + package HITL signé</div>
+<div class="flow">
+<div class="step">Pack B2<br>2 lots · 2 magasins</div><span class="arrow">→</span>
+<div class="step hot">Vérifier<br>HMAC · séquence</div><span class="arrow">→</span>
+<div class="step">Recalcul<br>4,2 °C · 190 min</div><span class="arrow">→</span>
+<div class="step">Politique<br>P1-P6</div><span class="arrow">→</span>
+<div class="step">Exposition<br>60/100</div><span class="arrow">→</span>
+<div class="step ok">JSON<br>RETRAIT</div><span class="arrow">→</span>
+<div class="step hot">HITL<br>token signé</div>
+</div>
+<div class="two">
+<div>
+<h2>Ce que M5 garantit</h2>
+<ul style="font-size:12pt;line-height:1.6">
+<li>JSON canonique <b>9 clés</b>, validé à 100 %</li>
+<li>Delta et durée <b>recalculés</b>, jamais lus dans un LLM</li>
+<li>Faux journal <b>détecté</b>, décision non réduite</li>
+<li>Token <b>signé, expirant, à usage unique</b></li>
+<li>Ledger <b>append-only</b> + outbox idempotente</li>
+<li><b>0 PII</b> en sortie</li>
+</ul>
+</div>
+<div class="card" style="background:#0b1f3a;color:#fff;border:none">
+<div style="font-size:8pt;color:#ffd48a;letter-spacing:1.5px">RÉSULTAT NOMINAL</div>
+<pre style="background:transparent;padding:2mm 0;font-size:9pt;color:#e7eef8">{
+  "incident": "I-2026-11",
+  "ecarts": [
+    {
+      "chambre": "CF-3",
+      "delta_c": 4.2,
+      "duree_min": 190
+    }
+  ],
+  "magasins": [
+    "G-12",
+    "G-19"
+  ],
+  "lots": [
+    "L-8841",
+    "L-8842"
+  ],
+  "fournisseurs": [
+    "F-07"
+  ],
+  "obligation": {
+    "texte": "ONSSA-retrait",
+    "delai_h": 24
+  },
+  "decision": "RETRAIT",
+  "hitl": "REQUIS",
+  "sources": [
+    "journal_cf3.csv",
+    "guide_onssa.pdf#p12",
+    "procedure_interne.pdf#p4"
+  ]
+}</pre>
+</div>
+</div>
+<div class="foot"><span>M5 — Driss · B4 Décision + HITL</span><span>Slide 1 / 2</span></div>
+</section>
+
+<section class="slide">
+<div class="kicker">Preuves et audit</div>
+<h1 style="font-size:26pt">10/10 tests · 0 PII · 0 faux log accepté</h1>
+<div class="grid" style="margin:8mm 0">
+<div class="card"><span class="n">10/10</span><span class="l">Tests fonctionnels</span></div>
+<div class="card"><span class="n">4,2 °C</span><span class="l">Delta / 190 min</span></div>
+<div class="card"><span class="n">60/100</span><span class="l">Exposition</span></div>
+<div class="card"><span class="n">0</span><span class="l">PII en sortie</span></div>
+</div>
+<div class="two">
+<div>
+<h2>Tests clés</h2>
+<table style="width:100%;border-collapse:collapse;font-size:10pt">
+<tr style="background:#0b1f3a;color:#fff"><th style="text-align:left;padding:2mm">Cas</th><th style="text-align:left;padding:2mm">Résultat</th></tr>
+<tr><td style="border-bottom:1px solid #d8dee8;padding:2mm">Nominal RETRAIT</td><td><b>PASS</b></td></tr>
+<tr><td style="border-bottom:1px solid #d8dee8;padding:2mm">Rappel + double contrôle</td><td><b>PASS</b></td></tr>
+<tr><td style="border-bottom:1px solid #d8dee8;padding:2mm">Certificat invalide</td><td><b>PASS</b></td></tr>
+<tr><td style="border-bottom:1px solid #d8dee8;padding:2mm">Token modifié / expiré / rejoué</td><td><b>PASS</b></td></tr>
+<tr><td style="border-bottom:1px solid #d8dee8;padding:2mm">Faux journal</td><td><b>PASS</b></td></tr>
+<tr><td style="padding:2mm">PII</td><td><b>PASS</b></td></tr>
+</table>
+</div>
+<div>
+<h2>Preuves</h2>
+<pre style="font-size:7.6pt">proofs/
+  result_nominal.json
+  hitl_package.json
+  ledger_record.json
+  outbox_records.json
+  traceability_matrix.csv
+  test_report.json
+  test_output.txt
+  hashes.txt
+  cases/ (7 scénarios)</pre>
+<div class="badge">GitHub</div><div class="badge">ClickUp</div><div class="badge">PDF 5 pages</div>
+</div>
+</div>
+<div style="margin-top:6mm;font-size:11pt;color:#5b6778">Verdict : B4 est exécutable, testé, traçable et signé. La décision reste humaine ; la preuve est déterministe.</div>
+<div class="foot"><span>M5 — Driss · B4 Décision + HITL</span><span>Slide 2 / 2</span></div>
+</section>
+</body></html>

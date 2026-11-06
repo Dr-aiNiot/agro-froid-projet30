@@ -1,0 +1,14 @@
+{
+  "ledger_id": "LED-0001",
+  "incident_id": "I-2026-11",
+  "decision": "RETRAIT",
+  "status": "APPROVED",
+  "result_hash": "0183183ce1012022fc6bfc0df02fd5162c279889b64e987355f67b78d10bccde",
+  "actor": "U-042",
+  "actor_role": "QUALITY_MANAGER",
+  "reason": "delta 4,2 C pendant 190 min, 2 lots, 2 magasins",
+  "nonce": "a17f5673a5c34921",
+  "decided_at": "2026-11-06T02:27:46.743184+00:00",
+  "prev_hash": "GENESIS",
+  "record_hash": "ddbcc23fda1f69260de30c2b8f07dd8eb27c06f32e85a681b8c5c5c081c41576"
+}

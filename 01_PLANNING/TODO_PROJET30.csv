@@ -1,0 +1,43 @@
+﻿ID;Membre;Lot;Tache;Entree;Sortie_attendue;Estimation_h;Dependance;Critere_de_fini
+D-01;M5;Lead + B4;Figer les 5 contrats et le schéma canonique;Sujet, sections 7-8;JSON Schema + validateur;4;-;Les 4 consommateurs valident le schéma
+D-02;M1;B0 + front;Écrire le Planner 3 étapes et le plan de secours;Contrat B0, politique;Prompt + parseur + tests;3;D-01;Plan valide sur 10 cas, fallback testé
+D-03;M1;B0 + front;Câbler les RunFlow B3 → B2 → B4;5 flux importés;B0 exécutable, edges vérifiés;5;B1-B4 v0;Scénario nominal sans edge perdu
+D-04;M1;B0 + front;Corrélation, idempotence, erreurs, retries;Contrat enveloppe;Table de codes + tests de rejeu;4;D-01;Rejeu = même résultat, pas de doublon
+D-05;M5;Lead + B4;API HITL : token, commit, rejet;Contrat HITL;Endpoints + tests tamper/expiry;5;B4 v0;Token modifié et expiré refusés
+D-06;M1;B0 + front;Cockpit Streamlit, 3 écrans;Maquette, API;App lançable, captures;8;D-03;3 écrans, navigation clavier, export JSON
+D-07;M1;B0 + front;Intégration E2E et mode secours;Tous les flux;Scénario nominal + 3 pannes;5;D-03..06;E2E nominal < 10 s, panne B2 gérée
+D-08;M1;B0 + front;Agent Card B0 et runbook;Modèle J23;2 pages;2;D-03;Agent Card relue, runbook testé
+D-09;M5;Lead + B4;Démo, captures, vidéo;Scénario figé;Vidéo 3 min + captures;3;D-07;Démo chronométrée sans erreur
+D-10;M5;Lead + B4;Assembler le dossier PDF;Contributions des 4;PDF 25-30 pages;4;Toutes;Sommaire, annexes, preuves
+I-01;M2;B1;Manifeste corpus et vérification des checksums;5 documents;manifest.json + rejet des non signés;3;D-01;5 documents vérifiés, 0 non signé accepté
+I-02;M2;B1;Pipeline PDF → chunks → embeddings → Mongo;Documents, clé Google;184 chunks indexés, page conservée;6;I-01;Recherche top-k retrouve la page
+I-03;M2;B1;OCR de secours et métadonnées de page;PDF scanné;Texte + page + confiance OCR;4;I-02;1 PDF scanné indexé avec page
+I-04;M2;B1;Télémétrie : HMAC, séquence, chaîne, quorum;Journal 1 440 lignes;Vérifiées / quarantaine + rapport;6;I-01;1440/1440 nominal, 1 falsifiée détectée
+I-05;M2;B1;Extraction entités/relations et validation d'ontologie;Corpus + référentiel;48 nœuds, 67 arêtes, 0 orphelin;6;I-02, I-04;8 types de nœuds, 6 relations
+I-06;M2;B1;Index Mongo et contrôles de qualité;Graphe;Index, requêtes, rapport de conflits;4;I-05;Requêtes < 100 ms, 0 conflit non marqué
+I-07;M2;B1;Jeu de données : 12 lots, 4 fournisseurs, 200 clients, leurres;Scénario;CSV/JSON figés + manifeste;4;-;Jeu reproductible, checksums publiés
+I-08;M2;B1;Tests B1 et Agent Card;7 tests;Rapport, 7/7;3;I-02..07;7/7 et Agent Card relue
+Z-01;M3;B2;Ancrage, alias, expansion de requête;Question, référentiel;Ancre + requête enrichie;3;D-01;Ancrage correct sur 20 questions
+Z-02;M3;B2;Recherche vectorielle et filtres de version;Chunks B1;Top-8 + scores;4;I-02;Top-8 reproductible, filtre version OK
+Z-03;M3;B2;BM25 Python;Chunks;Top-8 + tests unitaires;5;I-02;Scores BM25 vérifiés sur 10 requêtes
+Z-04;M3;B2;RRF et rerank déterministe;Deux listes;Top-6 fusionné;4;Z-02, Z-03;Fusion stable, même entrée = même sortie
+Z-05;M3;B2;BFS 3 sauts et fenêtre temporelle;Graphe B1;Chemins + confiance;6;I-05;Chemin I → CF-3 → lots → magasins
+Z-06;M3;B2;Projection clients/obligation et score de confiance;Chemins + agrégats;Candidats + confiance;4;Z-05;128 clients agrégés, 0 token exposé
+Z-07;M3;B2;Pack de preuves et citations;Top-6 + chemins;JSON B2 conforme;3;Z-04, Z-06;Schéma B2 valide sur 10 cas
+Z-08;M3;B2;Tests, benchmark 5 questions, Agent Card;Jeu doré;Rapport 5/5 hybride;5;Z-07;Hybride 5/5, vecteur 2/5, graphe 4/5
+M-01;M4;B3;Normalisation et patterns d'injection FR/EN/AR;Texte, logs, PDF;Patterns + tests unitaires;5;D-01;20 patterns testés, 0 régression
+M-02;M4;B3;Classifieur LLM et seuils 0,4 / 0,7;Prompt sécurité;Verdict + findings;4;M-01;Seuils testés sur 15 cas
+M-03;M4;B3;Authenticité télémétrie, certificats, corpus;Formats 6.5 et 6.6;Trust flags + quarantaine;8;I-04;4 variantes de faux détectées
+M-04;M4;B3;Tokenisation, DLP, k-anonymat;Référentiel clients;Tokens, agrégats, tests PII;5;I-07;0 carte/e-mail/téléphone en sortie
+M-05;M4;B3;Allowlist d'outils et goal guard;System message;Actions autorisées, refus;4;M-02;Action hors allowlist refusée
+M-06;M4;B3;25 cas Red Team et 6 contrôles légitimes;Pack d'attaques;Résultats V0/V1;6;M-03..05;25/25 non exploitables, ≤1 FP
+M-07;M4;B3;Rapport avant/après et tests B3;Résultats;Tableau, 0 exploitable;5;M-06;Rapport PDF + JSON
+M-08;M4;B3;Agent Card B3 et contribution threat model;Modèle J26;2 pages + matrice;3;M-03;OWASP/ATLAS mappés
+H-01;M5;B4;Validateur du schéma canonique;Contrat D-01;Validateur + 20 cas limites;4;D-01;20/20 cas limites corrects
+H-02;M5;B4;Recalcul delta/durée et politique P1-P6;Télémétrie vérifiée;Décision + motifs;5;I-04;4 décisions possibles couvertes
+H-03;M5;B4;Exposition et lots non résolus;Pack B2;Score, niveau, unresolved;4;Z-07;Score reproductible, unresolved listé
+H-04;M5;B4;Package HITL et token signé;Contrat HITL;Token, expiry, nonce;5;H-02;Tamper/expiry/rejeu refusés
+H-05;M5;B4;Commit, ledger, outbox, DLQ, idempotence;État HITL;Écritures + tests rejeu;6;H-04;1 seule notification par décision
+H-06;M5;B4;Sources, citations et refus;Pack + politique;Liste 8 sources max;3;H-02;JSON exact, sources valides
+H-07;M5;B4;Tests B4 et 4 décisions;Cas nominal, rappel, quarantaine, escalade;7/7;4;H-05;7/7 et 4 décisions
+H-08;M5;B4;Agent Card B4 et runbook;Modèle J23;2 pages;2;H-05;Agent Card relue

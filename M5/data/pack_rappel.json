@@ -1,0 +1,84 @@
+{
+  "anchor": {
+    "type": "Incident",
+    "id": "I-2026-11"
+  },
+  "candidates": {
+    "chambres": [
+      "CF-3"
+    ],
+    "capteurs": [
+      "C-118",
+      "C-119"
+    ],
+    "lots": [
+      "L-8841",
+      "L-8842"
+    ],
+    "magasins": [
+      "G-12",
+      "G-19"
+    ],
+    "fournisseurs": [
+      "F-07"
+    ],
+    "clients_tokenized_count": 128
+  },
+  "lots_detail": [
+    {
+      "lot_id": "L-8841",
+      "quantite": 300,
+      "vendus": 40,
+      "magasin": "G-12"
+    },
+    {
+      "lot_id": "L-8842",
+      "quantite": 200,
+      "vendus": 0,
+      "magasin": "G-19"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "EV-01",
+      "type": "telemetry",
+      "text": "delta 4.2 C / 190 min",
+      "source": "journal_cf3.csv",
+      "score": 1.0,
+      "trust": "verified"
+    },
+    {
+      "id": "EV-02",
+      "type": "chunk",
+      "text": "Procedure de retrait et delai ONSSA",
+      "source": "guide_onssa.pdf#p12",
+      "score": 0.82,
+      "trust": "signed"
+    },
+    {
+      "id": "EV-03",
+      "type": "chunk",
+      "text": "Seuils internes de retrait",
+      "source": "procedure_interne.pdf#p4",
+      "score": 0.74,
+      "trust": "signed"
+    }
+  ],
+  "graph_paths": [
+    {
+      "path": "I-2026-11 -SURVEILLE-> CF-3 -STOCKE-> L-8841 -LIVRE_A-> G-12",
+      "confidence": 0.93
+    },
+    {
+      "path": "I-2026-11 -SURVEILLE-> CF-3 -STOCKE-> L-8842 -LIVRE_A-> G-19",
+      "confidence": 0.91
+    }
+  ],
+  "confidence": 0.87,
+  "coverage": {
+    "lots": 1.0,
+    "magasins": 1.0,
+    "fournisseurs": 1.0
+  },
+  "conflicts": []
+}

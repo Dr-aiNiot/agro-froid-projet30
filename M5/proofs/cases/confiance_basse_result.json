@@ -1,0 +1,32 @@
+{
+  "incident": "I-2026-11",
+  "ecarts": [
+    {
+      "chambre": "CF-3",
+      "delta_c": 4.2,
+      "duree_min": 190
+    }
+  ],
+  "magasins": [
+    "G-12",
+    "G-19"
+  ],
+  "lots": [
+    "L-8841",
+    "L-8842"
+  ],
+  "fournisseurs": [
+    "F-07"
+  ],
+  "obligation": {
+    "texte": "ONSSA-retrait",
+    "delai_h": 24
+  },
+  "decision": "ESCALADE",
+  "hitl": "REQUIS",
+  "sources": [
+    "journal_cf3.csv",
+    "guide_onssa.pdf#p12",
+    "procedure_interne.pdf#p4"
+  ]
+}

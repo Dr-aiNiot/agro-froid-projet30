@@ -1,0 +1,22 @@
+[
+  {
+    "id": "OUT-001",
+    "type": "STORE_WITHDRAWAL",
+    "stores": [
+      "G-12",
+      "G-19"
+    ],
+    "lots": [
+      "L-8841",
+      "L-8842"
+    ],
+    "status": "PENDING",
+    "idempotency_key": "OUT-ddbcc23fda1f"
+  },
+  {
+    "id": "OUT-002",
+    "type": "QUALITY_DOSSIER",
+    "status": "PENDING",
+    "idempotency_key": "DOS-ddbcc23fda1f"
+  }
+]

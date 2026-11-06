@@ -1,0 +1,22 @@
+{
+  "motif": "P2_LOT_VENDU",
+  "confidence": 0.87,
+  "exposure": {
+    "score": 64.8,
+    "niveau": "ELEVE",
+    "lots": 2,
+    "magasins": 2,
+    "clients_tokenized": 128,
+    "f_magasin": 1.2,
+    "f_delai": 1.0,
+    "total_brut": 648.0
+  },
+  "quarantine": false,
+  "untrusted_rows": 0,
+  "verified_rows": 8,
+  "policy_version": "POL-FROID-1.2",
+  "paths": [
+    "I-2026-11 -SURVEILLE-> CF-3 -STOCKE-> L-8841 -LIVRE_A-> G-12",
+    "I-2026-11 -SURVEILLE-> CF-3 -STOCKE-> L-8842 -LIVRE_A-> G-19"
+  ]
+}

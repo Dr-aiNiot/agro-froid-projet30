@@ -1,0 +1,100 @@
+{
+  "schema": "agent-card/1.0",
+  "name": "B4-DECIDE",
+  "display_name": "B4 Decision + HITL - AGRO-FROID",
+  "version": "1.0.0",
+  "owner": "Driss Larhrissi",
+  "project": "Projet 30 - AGRO-FROID",
+  "description": "Agent deterministe qui transforme un incident de chaine du froid en decision conforme et en package d'approbation humaine signe. Aucun LLM, aucun appel externe.",
+  "runtime": {
+    "platform": "Agentic AI de ABA (ABA Technology)",
+    "flow_id": "6656f31f-ad1f-4591-b2ef-0d68c8aa6dad",
+    "folder_id": "f87f09a0-2c80-46bd-8cd8-8e53a297b12d",
+    "topology": "ChatInput > Prompt (code moteur) > PythonREPL > Parser > ChatOutput",
+    "nodes": 5,
+    "edges": 4,
+    "llm_calls": 0,
+    "external_calls": 0,
+    "api_keys": 0
+  },
+  "mission": {
+    "goal": "Decider RETRAIT, RAPPEL, QUARANTAINE, SURVEILLANCE ou ESCALADE sur un ecart de temperature verifie, puis armer une porte HITL.",
+    "out_of_scope": [
+      "Executer le retrait ou le rappel (decision humaine)",
+      "Contacter les clients ou les autorites",
+      "Interpreter des documents non structures",
+      "Remplacer l'auditeur qualite"
+    ]
+  },
+  "inputs": [
+    {"name": "pack B2", "format": "JSON", "required": true, "fields": ["anchor.id", "candidates.magasins", "candidates.lots", "candidates.fournisseurs", "lots_detail", "confidence", "evidence"]},
+    {"name": "telemetrie signee", "format": "CSV", "required": true, "fields": ["ts", "chambre", "capteur", "temp_c", "seq", "key_id", "hmac"]},
+    {"name": "politique", "format": "JSON", "required": true, "fields": ["consignes", "seuils", "obligation", "exposure"]},
+    {"name": "registre certificats", "format": "JSON", "required": true, "fields": ["valid", "expires_at", "lot_ids"]}
+  ],
+  "outputs": [
+    {"name": "resultat canonique", "format": "JSON", "keys": ["incident", "ecarts", "magasins", "lots", "fournisseurs", "obligation", "decision", "hitl", "sources"]},
+    {"name": "package HITL", "format": "JSON", "fields": ["token", "payload", "expires_at", "required_role", "dual_control"]},
+    {"name": "enregistrement ledger", "format": "JSON", "fields": ["ledger_id", "result_hash", "prev_hash", "record_hash", "actor", "reason"]},
+    {"name": "evenement outbox", "format": "JSON", "fields": ["idempotency_key", "payload_hash", "status", "receipt"]}
+  ],
+  "capabilities": [
+    "Verification HMAC de chaque ligne de telemetrie (les lignes falsifiees vont en quarantaine)",
+    "Recalcul des ecarts et de la duree par chambre, sans faire confiance au pack",
+    "Application de la politique P1-P6 et du seuil de confiance 0.80",
+    "Chiffrage de l'exposition (score 0-100, niveau MODERE/ELEVE/CRITIQUE)",
+    "Validation du contrat a 9 cles avant toute sortie",
+    "Emission d'un token HITL HMAC-SHA256 avec nonce, expiration 30 min et double controle sur RAPPEL",
+    "Livraison idempotente avec retry (1, 2, 4 s), bascule DLQ et rejeu sans recalcul"
+  ],
+  "decisions": {
+    "RETRAIT": "Ecart et duree au-dela des seuils, aucune vente constatee",
+    "RAPPEL": "Ecart et duree au-dela des seuils, lot deja vendu (double controle humain)",
+    "QUARANTAINE": "Certificat fournisseur absent, expire ou non lie au lot",
+    "SURVEILLANCE": "Ecart sous les seuils",
+    "ESCALADE": "Confiance insuffisante, aucune ligne verifiee ou aucun ecart verifiable"
+  },
+  "prohibitions": [
+    "Aucun appel a un modele de langage",
+    "Aucun acces reseau sortant",
+    "Aucune donnee personnelle en sortie (clients tokenises uniquement)",
+    "Aucune execution d'un retrait ou d'un rappel sans validation humaine",
+    "Aucune reduction de decision quand la telemetrie est non fiable"
+  ],
+  "human_oversight": {
+    "required_for": ["RETRAIT", "RAPPEL", "QUARANTAINE", "ESCALADE"],
+    "not_required_for": ["SURVEILLANCE"],
+    "roles": {"QUALITY_MANAGER": "approuve toute decision", "DUTY_MANAGER": "approuve en astreinte"},
+    "dual_control": "RAPPEL",
+    "token_ttl_minutes": 30,
+    "anti_replay": "nonce a usage unique, resultat lie par hash"
+  },
+  "failure_modes": [
+    {"mode": "Telemetrie falsifiee", "detection": "HMAC invalide ligne a ligne", "effet": "quarantaine, decision non reduite", "preuve": "proofs/cases/falsifie_result.json"},
+    {"mode": "Pack incoherent", "detection": "validateur 9 cles + recalcul des ecarts", "effet": "refus de sortie", "preuve": "tests 18 cas limites"},
+    {"mode": "Plateforme indisponible", "detection": "erreur de livraison", "effet": "3 tentatives puis DLQ", "preuve": "proofs/outbox_delivery.json"},
+    {"mode": "Rejeu d'une decision", "detection": "nonce deja utilise + cle d'idempotence", "effet": "refus, aucun doublon", "preuve": "tests 05-07 et idempotence"},
+    {"mode": "Confiance B2 trop basse", "detection": "confidence < 0.80", "effet": "ESCALADE", "preuve": "proofs/cases/confiance_basse_result.json"}
+  ],
+  "metrics": {
+    "tests": "42/42 OK (10 fonctionnels + 18 cas limites + 14 outbox/HITL)",
+    "runs_plateforme": "4/4 (RETRAIT, RAPPEL, QUARANTAINE, ESCALADE)",
+    "schema": "9/9 cles a chaque run",
+    "latence_moteur": "< 50 ms hors chargement",
+    "cout_par_decision": "0 EUR"
+  },
+  "compliance": [
+    {"referentiel": "ISO/IEC 42001", "exigence": "supervision humaine et transparence", "mise_en_oeuvre": "HITL obligatoire, token trace, ledger inalterable"},
+    {"referentiel": "ISO 22000 / HACCP", "exigence": "tracabilite des lots et des mesures", "mise_en_oeuvre": "sources citees, hash de resultat, journal"},
+    {"referentiel": "OWASP agentic", "exigence": "usage excessif des outils et injection", "mise_en_oeuvre": "aucun outil exposé, entrees validees, sortie a schema fige"},
+    {"referentiel": "EU AI Act", "exigence": "systeme a haut risque - supervision", "mise_en_oeuvre": "decision finale humaine, journal d'audit opposable"}
+  ],
+  "evidence": {
+    "documentation": "M5/docs/Documentation_M5.pdf",
+    "agent_card": "M5/docs/Agent_Card_M5.pdf",
+    "runs": "M5/proofs/platform_runs.json",
+    "screenshots": ["01_JSON/m5_canvas.png", "01_JSON/m5_playground.png"],
+    "export": "01_JSON/M5_B4_DECISION_HITL.json",
+    "repository": "https://github.com/Dr-aiNiot/agro-froid-projet30"
+  }
+}

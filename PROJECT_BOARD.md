@@ -17,14 +17,14 @@ Board de secours GitHub (le Project v2 n'est pas activé faute de scope `project
 
 | Tâche | Issue | Statut | Preuve |
 |---|---|---|---|
-| H-01 Validateur du schéma | #35 | **Done** | `M5/src/m5_b4.py` · `validate_result` |
+| H-01 Validateur du schéma | #35 | **Done** | `M5/src/m5_b4.py` + 18 cas limites (`M5/proofs/test_output_full.txt`) |
 | H-02 Recalcul delta/durée + politique P1-P6 | #36 | **Done** | `M5/proofs/analysis_nominal.json` |
 | H-03 Exposition + unresolved | #37 | **Done** | `M5/proofs/analysis_nominal.json` |
 | H-04 Package HITL + token signé | #38 | **Done** | `M5/proofs/hitl_package.json` |
-| H-05 Commit, ledger, outbox, idempotence | #39 | **Done** | `M5/proofs/ledger_record.json` |
+| H-05 Commit, ledger, outbox, idempotence | #39 | **Done** | `M5/proofs/outbox_delivery.json` + `dlq_replay.json` (8/8) |
 | H-06 Sources, citations, refus | #40 | **Done** | `M5/proofs/result_nominal.json` |
 | H-07 Tests B4 + 4 décisions | #41 | **Done** | `M5/proofs/test_output.txt` (10/10) |
-| H-08 Agent Card + runbook | #42 | **Done** | `M5/docs/Documentation_M5.pdf` |
+| H-08 Agent Card + runbook | #42 | **Done** | `M5/docs/Agent_Card_M5.pdf` (2 p.) + `Documentation_M5.pdf` |
 | D-01 Contrats + schéma | #1 | **Done** | `M5/src/m5_b4.py` |
 | D-05 API HITL | #5 | **Done** | `M5/src/m5_b4.py` · `Ledger.commit` |
 | D-09 Démo / captures | #9 | **Done** | `M5/docs/Slides_M5.pdf` |

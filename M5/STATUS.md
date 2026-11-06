@@ -28,3 +28,11 @@
 | Preuve | `M5/proofs/platform_runs.json` + `01_JSON/m5_canvas.png` |
 
 **Bilan : 12/12 Done.**
+
+## Cloture du 06/11/2026 - reste a faire
+
+| ID | Livre | Preuve |
+|---|---|---|
+| H-01 | 18 cas limites + validateur durci (42/42 tests) | `proofs/test_output_full.txt` |
+| H-05 | Outbox : retry 3x backoff, DLQ, rejeu sans re-decision, idempotence (8/8) | `proofs/outbox_delivery.json`, `proofs/dlq_replay.json` |
+| H-08 | Agent Card 2 pages + version JSON machine | `docs/Agent_Card_M5.pdf`, `docs/Agent_Card_M5.json` |

@@ -62,3 +62,14 @@ python src/run_demo.py
 ## Limites
 
 Le pack B2, la télémétrie et les certificats sont des mocks. Le token utilise un secret de démonstration. Le double contrôle RAPPEL est modélisé dans le payload ; l'écran deux acteurs reste à câbler. DLQ/outbox sont simulés en JSON.
+
+## Executer les preuves
+
+```bat
+cd M5
+python -m unittest discover -s tests -p "test_*.py"   # 42 tests
+python src/run_outbox_demo.py                        # outbox + DLQ + rejeu
+python src/run_demo.py                               # 6 cas metier
+```
+
+Livrables : `docs/Documentation_M5.pdf`, `docs/Agent_Card_M5.pdf`, `docs/Slides_M5.pdf`.

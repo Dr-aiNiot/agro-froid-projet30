@@ -38,6 +38,10 @@ class HitlError(M5Error):
     pass
 
 
+class OutboxError(M5Error):
+    pass
+
+
 def now_utc() -> datetime:
     return datetime.now(timezone.utc)
 
@@ -183,21 +187,37 @@ def build_result(pack: dict[str, Any], ecarts: list[dict[str, Any]], decision: s
 def validate_result(result: dict[str, Any]) -> None:
     if set(result) != set(REQUIRED):
         raise SchemaError(f"CLES_INVALIDES: manquantes={set(REQUIRED)-set(result)} extras={set(result)-set(REQUIRED)}")
-    if not re.match(r"^I-\d{4}-\d{2}$", result["incident"]):
+    if not isinstance(result["incident"], str) or not re.match(r"^I-\d{4}-\d{2}$", result["incident"]):
         raise SchemaError("INCIDENT_INVALIDE")
+    if not isinstance(result["ecarts"], list):
+        raise SchemaError("ECART_INVALIDE")
     if not result["ecarts"] and result["decision"] != "ESCALADE":
         raise SchemaError("ECARTS_VIDE")
     for e in result["ecarts"]:
-        if not re.match(r"^CF-\d+$", e["chambre"]) or not isinstance(e["delta_c"], (int, float)) or not isinstance(e["duree_min"], int):
+        if (not isinstance(e, dict)
+                or not isinstance(e.get("chambre"), str)
+                or not re.match(r"^CF-\d+$", e["chambre"])
+                or isinstance(e.get("delta_c"), bool)
+                or not isinstance(e.get("delta_c"), (int, float))
+                or isinstance(e.get("duree_min"), bool)
+                or not isinstance(e.get("duree_min"), int)):
             raise SchemaError("ECART_INVALIDE")
     for key, pattern in (("magasins", r"^G-\d+$"), ("lots", r"^L-\d+$"), ("fournisseurs", r"^F-\d+$")):
-        if not result[key] or not all(re.match(pattern, x) for x in result[key]):
+        values = result[key]
+        if (not isinstance(values, list) or not values
+                or not all(isinstance(x, str) and re.match(pattern, x) for x in values)):
             raise SchemaError(f"{key.upper()}_INVALIDE")
-    if not isinstance(result["obligation"], dict) or set(result["obligation"]) != {"texte", "delai_h"}:
+    obligation = result["obligation"]
+    if not isinstance(obligation, dict) or set(obligation) != {"texte", "delai_h"}:
+        raise SchemaError("OBLIGATION_INVALIDE")
+    if not isinstance(obligation["texte"], str) or isinstance(obligation["delai_h"], bool) \
+            or not isinstance(obligation["delai_h"], int) or obligation["delai_h"] <= 0:
         raise SchemaError("OBLIGATION_INVALIDE")
     if result["decision"] not in DECISIONS or result["hitl"] not in {"REQUIS", "NON_REQUIS"}:
         raise SchemaError("DECISION_OU_HITL_INVALIDE")
-    if not (1 <= len(result["sources"]) <= 8) or not all(re.match(r"^[A-Za-z0-9_.-]+(#(p\d+|L\d+))?$", s) for s in result["sources"]):
+    sources = result["sources"]
+    if (not isinstance(sources, list) or not (1 <= len(sources) <= 8)
+            or not all(isinstance(s, str) and re.match(r"^[A-Za-z0-9_.-]+(#(p\d+|L\d+))?$", s) for s in sources)):
         raise SchemaError("SOURCES_INVALIDES")
 
 
@@ -281,6 +301,121 @@ class Ledger:
         self.prev_hash = record["record_hash"]
         self.records.append(record)
         return record
+
+
+# ---------------------------------------------------------------------------
+# Outbox : livraison idempotente, retry, DLQ et rejeu
+# ---------------------------------------------------------------------------
+
+class Outbox:
+    """File de livraison sortante.
+
+    - cle d'idempotence : un meme evenement n'est jamais livre deux fois ;
+    - retry borne avec backoff (1, 2, 4 s par defaut) ;
+    - apres epuisement : bascule en DLQ, l'evenement d'origine est conserve ;
+    - rejeu DLQ : on rejoue le MEME payload (hash verifie), sans re-decision.
+    """
+
+    def __init__(self, max_attempts: int = 3, backoff=(1.0, 2.0, 4.0),
+                 sleep=None, when=None) -> None:
+        self.max_attempts = max_attempts
+        self.backoff = tuple(backoff)
+        self._sleep = sleep or (lambda s: None)
+        self._now = when or now_utc
+        self.records: list[dict[str, Any]] = []
+        self.dlq: list[dict[str, Any]] = []
+        self._by_key: dict[str, dict[str, Any]] = {}
+
+    def enqueue(self, idempotency_key: str, event: dict[str, Any]) -> dict[str, Any]:
+        if not idempotency_key:
+            raise OutboxError("CLE_IDEMPOTENCE_VIDE")
+        if idempotency_key in self._by_key:
+            existing = self._by_key[idempotency_key]
+            return {"status": "DUPLICATE", "outbox_id": existing["outbox_id"], "record": existing}
+        record = {
+            "outbox_id": f"OUT-{len(self.records) + 1:04d}",
+            "idempotency_key": idempotency_key,
+            "payload_hash": sha256_json(event),
+            "payload": event,
+            "status": "PENDING",
+            "attempts": 0,
+            "history": [],
+            "created_at": self._now().isoformat(),
+        }
+        self.records.append(record)
+        self._by_key[idempotency_key] = record
+        return {"status": "ENQUEUED", "outbox_id": record["outbox_id"], "record": record}
+
+    def deliver(self, idempotency_key: str, sender) -> dict[str, Any]:
+        record = self._by_key.get(idempotency_key)
+        if record is None:
+            raise OutboxError(f"EVENEMENT_INCONNU:{idempotency_key}")
+        if record["status"] == "DONE":
+            return {"status": "ALREADY_DONE", "outbox_id": record["outbox_id"],
+                    "receipt": record.get("receipt")}
+        if record["status"] == "DLQ":
+            return {"status": "IN_DLQ", "outbox_id": record["outbox_id"]}
+
+        while record["attempts"] < self.max_attempts:
+            record["attempts"] += 1
+            try:
+                receipt = sender(record["payload"])
+            except Exception as exc:  # noqa: BLE001 - toute panne est transitoire ici
+                record["history"].append({
+                    "attempt": record["attempts"],
+                    "at": self._now().isoformat(),
+                    "error": f"{type(exc).__name__}: {exc}",
+                })
+                if record["attempts"] >= self.max_attempts:
+                    self._to_dlq(record, f"{type(exc).__name__}: {exc}")
+                    return {"status": "DLQ", "outbox_id": record["outbox_id"],
+                            "attempts": record["attempts"], "dlq": self.dlq[-1]}
+                delay = self.backoff[min(record["attempts"] - 1, len(self.backoff) - 1)]
+                self._sleep(delay)
+                continue
+            record["status"] = "DONE"
+            record["receipt"] = receipt
+            record["delivered_at"] = self._now().isoformat()
+            return {"status": "DELIVERED", "outbox_id": record["outbox_id"],
+                    "attempts": record["attempts"], "receipt": receipt}
+
+        self._to_dlq(record, "TENTATIVES_EPUISEES")
+        return {"status": "DLQ", "outbox_id": record["outbox_id"], "dlq": self.dlq[-1]}
+
+    def _to_dlq(self, record: dict[str, Any], error: str) -> None:
+        record["status"] = "DLQ"
+        record["dead_at"] = self._now().isoformat()
+        self.dlq.append({
+            "dlq_id": f"DLQ-{len(self.dlq) + 1:04d}",
+            "outbox_id": record["outbox_id"],
+            "idempotency_key": record["idempotency_key"],
+            "payload_hash": record["payload_hash"],
+            "attempts": record["attempts"],
+            "last_error": error,
+            "created_at": self._now().isoformat(),
+            "status": "OPEN",
+        })
+
+    def replay(self, dlq_id: str, sender) -> dict[str, Any]:
+        """Rejoue un evenement DLQ sans recalculer la decision."""
+        entry = next((d for d in self.dlq if d["dlq_id"] == dlq_id), None)
+        if entry is None:
+            raise OutboxError(f"DLQ_INCONNUE:{dlq_id}")
+        record = self._by_key[entry["idempotency_key"]]
+        if sha256_json(record["payload"]) != entry["payload_hash"]:
+            raise OutboxError("PAYLOAD_ALTERE_DEPUIS_DLQ")
+        pre_hash = record["payload_hash"]
+        entry["status"] = "REPLAYED"
+        entry["replayed_at"] = self._now().isoformat()
+        record["status"] = "PENDING"
+        record["attempts"] = 0
+        record["history"].append({"attempt": 0, "at": self._now().isoformat(),
+                                  "error": f"REPLAY_FROM:{dlq_id}"})
+        out = self.deliver(entry["idempotency_key"], sender)
+        if out.get("status") == "DELIVERED":
+            entry["replay_outbox_id"] = out["outbox_id"]
+            entry["payload_unchanged"] = sha256_json(record["payload"]) == pre_hash
+        return out
 
 
 # ---------------------------------------------------------------------------

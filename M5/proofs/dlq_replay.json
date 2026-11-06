@@ -1,0 +1,29 @@
+{
+  "dlq": [
+    {
+      "dlq_id": "DLQ-0001",
+      "outbox_id": "OUT-0001",
+      "idempotency_key": "I-2026-11:RETRAIT:0183183ce101",
+      "payload_hash": "fd828eb194af5d3bcd3b46043aefe69df5324cfa4e1f1a6af9d8ccbd2ef9138b",
+      "attempts": 3,
+      "last_error": "ConnectionError: 503 SERVICE_UNAVAILABLE",
+      "created_at": "2026-11-06T12:24:48.493513+00:00",
+      "status": "REPLAYED",
+      "replayed_at": "2026-11-06T12:24:48.493513+00:00",
+      "replay_outbox_id": "OUT-0001",
+      "payload_unchanged": true
+    }
+  ],
+  "replay": {
+    "status": "DELIVERED",
+    "outbox_id": "OUT-0001",
+    "attempts": 1,
+    "receipt": {
+      "receipt": "ACK-REPLAY",
+      "received_hash": "fd828eb194af5d3bcd3b46043aefe69df5324cfa4e1f1a6af9d8ccbd2ef9138b"
+    }
+  },
+  "payload_unchanged_after_replay": true,
+  "decision_recalculee": false,
+  "commentaire": "Le rejeu reutilise le payload signe de la DLQ : la decision n'est pas recalculee, le hash reste identique et aucun doublon n'est cree."
+}

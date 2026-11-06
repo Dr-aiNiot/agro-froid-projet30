@@ -1,0 +1,265 @@
+{
+  "horodatage": "2026-11-06T12:24:48.493513+00:00",
+  "modele": "B4 Decision + HITL (execution reelle, aucun LLM)",
+  "politique_backoff_secondes": [
+    1,
+    2,
+    4
+  ],
+  "tentatives_max": 3,
+  "cas": [
+    {
+      "cas": "nominal - livraison immediate",
+      "decision": "RETRAIT",
+      "motif": "P1_DELTA_DUREE",
+      "hitl_required": true,
+      "idempotency_key": "I-2026-11:RETRAIT:0183183ce101",
+      "enqueue": "ENQUEUED",
+      "delivery": {
+        "status": "DELIVERED",
+        "outbox_id": "OUT-0001",
+        "attempts": 1,
+        "receipt": {
+          "receipt": "ACK-1",
+          "received_hash": "fd828eb194af5d3bcd3b46043aefe69df5324cfa4e1f1a6af9d8ccbd2ef9138b"
+        }
+      },
+      "replay": null,
+      "dlq": [],
+      "outbox_records": [
+        {
+          "outbox_id": "OUT-0001",
+          "idempotency_key": "I-2026-11:RETRAIT:0183183ce101",
+          "payload_hash": "fd828eb194af5d3bcd3b46043aefe69df5324cfa4e1f1a6af9d8ccbd2ef9138b",
+          "payload": {
+            "incident_id": "I-2026-11",
+            "decision": "RETRAIT",
+            "ledger_id": "LED-0001",
+            "result_hash": "0183183ce1012022fc6bfc0df02fd5162c279889b64e987355f67b78d10bccde",
+            "hitl_approved_by": "driss.larhrissi",
+            "hitl_reason": "Decision validee en revue"
+          },
+          "status": "DONE",
+          "attempts": 1,
+          "history": [],
+          "created_at": "2026-11-06T12:24:48.488597+00:00",
+          "receipt": {
+            "receipt": "ACK-1",
+            "received_hash": "fd828eb194af5d3bcd3b46043aefe69df5324cfa4e1f1a6af9d8ccbd2ef9138b"
+          },
+          "delivered_at": "2026-11-06T12:24:48.488597+00:00"
+        }
+      ],
+      "ledger_records": [
+        {
+          "ledger_id": "LED-0001",
+          "incident_id": "I-2026-11",
+          "decision": "RETRAIT",
+          "status": "APPROVED",
+          "result_hash": "0183183ce1012022fc6bfc0df02fd5162c279889b64e987355f67b78d10bccde",
+          "actor": "driss.larhrissi",
+          "actor_role": "QUALITY_MANAGER",
+          "reason": "Decision validee en revue",
+          "nonce": "21ce52c587d1366d",
+          "decided_at": "2026-11-06T12:24:48.488597+00:00",
+          "prev_hash": "GENESIS",
+          "record_hash": "42ca38a96a40a4ac30285891a3618729959fde9e7b17e2c492706f3611a31d68"
+        }
+      ],
+      "payload_unchanged_after_replay": true
+    },
+    {
+      "cas": "transitoire - 2 echecs puis succes",
+      "decision": "RETRAIT",
+      "motif": "P1_DELTA_DUREE",
+      "hitl_required": true,
+      "idempotency_key": "I-2026-11:RETRAIT:0183183ce101",
+      "enqueue": "ENQUEUED",
+      "delivery": {
+        "status": "DELIVERED",
+        "outbox_id": "OUT-0001",
+        "attempts": 3,
+        "receipt": {
+          "receipt": "ACK-RETRY",
+          "attempts_before_ack": 3
+        }
+      },
+      "replay": null,
+      "dlq": [],
+      "outbox_records": [
+        {
+          "outbox_id": "OUT-0001",
+          "idempotency_key": "I-2026-11:RETRAIT:0183183ce101",
+          "payload_hash": "fd828eb194af5d3bcd3b46043aefe69df5324cfa4e1f1a6af9d8ccbd2ef9138b",
+          "payload": {
+            "incident_id": "I-2026-11",
+            "decision": "RETRAIT",
+            "ledger_id": "LED-0001",
+            "result_hash": "0183183ce1012022fc6bfc0df02fd5162c279889b64e987355f67b78d10bccde",
+            "hitl_approved_by": "driss.larhrissi",
+            "hitl_reason": "Decision validee en revue"
+          },
+          "status": "DONE",
+          "attempts": 3,
+          "history": [
+            {
+              "attempt": 1,
+              "at": "2026-11-06T12:24:48.488597+00:00",
+              "error": "TimeoutError: plateforme indisponible (essai 1)"
+            },
+            {
+              "attempt": 2,
+              "at": "2026-11-06T12:24:48.488597+00:00",
+              "error": "TimeoutError: plateforme indisponible (essai 2)"
+            }
+          ],
+          "created_at": "2026-11-06T12:24:48.488597+00:00",
+          "receipt": {
+            "receipt": "ACK-RETRY",
+            "attempts_before_ack": 3
+          },
+          "delivered_at": "2026-11-06T12:24:48.488597+00:00"
+        }
+      ],
+      "ledger_records": [
+        {
+          "ledger_id": "LED-0001",
+          "incident_id": "I-2026-11",
+          "decision": "RETRAIT",
+          "status": "APPROVED",
+          "result_hash": "0183183ce1012022fc6bfc0df02fd5162c279889b64e987355f67b78d10bccde",
+          "actor": "driss.larhrissi",
+          "actor_role": "QUALITY_MANAGER",
+          "reason": "Decision validee en revue",
+          "nonce": "7bd5257af81f6fc2",
+          "decided_at": "2026-11-06T12:24:48.488597+00:00",
+          "prev_hash": "GENESIS",
+          "record_hash": "dc7918ef1a6a6f976c790943fc423976880ca1afe7b7793f61b9845a7ac0d1cf"
+        }
+      ],
+      "payload_unchanged_after_replay": true
+    },
+    {
+      "cas": "permanente - bascule DLQ puis rejeu",
+      "decision": "RETRAIT",
+      "motif": "P1_DELTA_DUREE",
+      "hitl_required": true,
+      "idempotency_key": "I-2026-11:RETRAIT:0183183ce101",
+      "enqueue": "ENQUEUED",
+      "delivery": {
+        "status": "DLQ",
+        "outbox_id": "OUT-0001",
+        "attempts": 3,
+        "dlq": {
+          "dlq_id": "DLQ-0001",
+          "outbox_id": "OUT-0001",
+          "idempotency_key": "I-2026-11:RETRAIT:0183183ce101",
+          "payload_hash": "fd828eb194af5d3bcd3b46043aefe69df5324cfa4e1f1a6af9d8ccbd2ef9138b",
+          "attempts": 3,
+          "last_error": "ConnectionError: 503 SERVICE_UNAVAILABLE",
+          "created_at": "2026-11-06T12:24:48.493513+00:00",
+          "status": "REPLAYED",
+          "replayed_at": "2026-11-06T12:24:48.493513+00:00",
+          "replay_outbox_id": "OUT-0001",
+          "payload_unchanged": true
+        }
+      },
+      "replay": {
+        "status": "DELIVERED",
+        "outbox_id": "OUT-0001",
+        "attempts": 1,
+        "receipt": {
+          "receipt": "ACK-REPLAY",
+          "received_hash": "fd828eb194af5d3bcd3b46043aefe69df5324cfa4e1f1a6af9d8ccbd2ef9138b"
+        }
+      },
+      "dlq": [
+        {
+          "dlq_id": "DLQ-0001",
+          "outbox_id": "OUT-0001",
+          "idempotency_key": "I-2026-11:RETRAIT:0183183ce101",
+          "payload_hash": "fd828eb194af5d3bcd3b46043aefe69df5324cfa4e1f1a6af9d8ccbd2ef9138b",
+          "attempts": 3,
+          "last_error": "ConnectionError: 503 SERVICE_UNAVAILABLE",
+          "created_at": "2026-11-06T12:24:48.493513+00:00",
+          "status": "REPLAYED",
+          "replayed_at": "2026-11-06T12:24:48.493513+00:00",
+          "replay_outbox_id": "OUT-0001",
+          "payload_unchanged": true
+        }
+      ],
+      "outbox_records": [
+        {
+          "outbox_id": "OUT-0001",
+          "idempotency_key": "I-2026-11:RETRAIT:0183183ce101",
+          "payload_hash": "fd828eb194af5d3bcd3b46043aefe69df5324cfa4e1f1a6af9d8ccbd2ef9138b",
+          "payload": {
+            "incident_id": "I-2026-11",
+            "decision": "RETRAIT",
+            "ledger_id": "LED-0001",
+            "result_hash": "0183183ce1012022fc6bfc0df02fd5162c279889b64e987355f67b78d10bccde",
+            "hitl_approved_by": "driss.larhrissi",
+            "hitl_reason": "Decision validee en revue"
+          },
+          "status": "DONE",
+          "attempts": 1,
+          "history": [
+            {
+              "attempt": 1,
+              "at": "2026-11-06T12:24:48.493513+00:00",
+              "error": "ConnectionError: 503 SERVICE_UNAVAILABLE"
+            },
+            {
+              "attempt": 2,
+              "at": "2026-11-06T12:24:48.493513+00:00",
+              "error": "ConnectionError: 503 SERVICE_UNAVAILABLE"
+            },
+            {
+              "attempt": 3,
+              "at": "2026-11-06T12:24:48.493513+00:00",
+              "error": "ConnectionError: 503 SERVICE_UNAVAILABLE"
+            },
+            {
+              "attempt": 0,
+              "at": "2026-11-06T12:24:48.493513+00:00",
+              "error": "REPLAY_FROM:DLQ-0001"
+            }
+          ],
+          "created_at": "2026-11-06T12:24:48.493513+00:00",
+          "dead_at": "2026-11-06T12:24:48.493513+00:00",
+          "receipt": {
+            "receipt": "ACK-REPLAY",
+            "received_hash": "fd828eb194af5d3bcd3b46043aefe69df5324cfa4e1f1a6af9d8ccbd2ef9138b"
+          },
+          "delivered_at": "2026-11-06T12:24:48.493513+00:00"
+        }
+      ],
+      "ledger_records": [
+        {
+          "ledger_id": "LED-0001",
+          "incident_id": "I-2026-11",
+          "decision": "RETRAIT",
+          "status": "APPROVED",
+          "result_hash": "0183183ce1012022fc6bfc0df02fd5162c279889b64e987355f67b78d10bccde",
+          "actor": "driss.larhrissi",
+          "actor_role": "QUALITY_MANAGER",
+          "reason": "Decision validee en revue",
+          "nonce": "8128cafa4cc5d499",
+          "decided_at": "2026-11-06T12:24:48.493513+00:00",
+          "prev_hash": "GENESIS",
+          "record_hash": "ede14db56d93ff4fbd6f57b6d8d14746f61053572d74461032a94a841127c876"
+        }
+      ],
+      "payload_unchanged_after_replay": true
+    }
+  ],
+  "idempotence": {
+    "cle": "I-2026-11:RETRAIT:0183183ce101",
+    "enqueue_1": "ENQUEUED",
+    "enqueue_2": "DUPLICATE",
+    "premiere_livraison": "DELIVERED",
+    "seconde_livraison": "ALREADY_DONE",
+    "recu_identique": true,
+    "total_enregistrements": 1
+  }
+}

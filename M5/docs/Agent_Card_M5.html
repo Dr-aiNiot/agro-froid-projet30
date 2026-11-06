@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Agent Card - B4-DECIDE - Projet 30 AGRO-FROID</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  :root {
+    --ink:#0f172a; --muted:#475569; --line:#cbd5e1; --accent:#0e7490;
+    --accent-soft:#ecfeff; --warn:#b45309; --ok:#15803d; --bg:#ffffff;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; background:var(--bg); color:var(--ink);
+    font-family:"Segoe UI",Arial,sans-serif; font-size:9.1pt; line-height:1.35;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .page { width:186mm; min-height:271mm; margin:0 auto; page-break-after:always; display:flex; flex-direction:column; }
+  .page:last-child { page-break-after:auto; }
+  header { border-bottom:2px solid var(--accent); padding-bottom:5px; margin-bottom:8px; }
+  .kicker { font-size:7.5pt; letter-spacing:.16em; color:var(--accent); font-weight:700; text-transform:uppercase; }
+  h1 { font-size:16pt; margin:2px 0 1px; letter-spacing:-.2px; }
+  .sub { color:var(--muted); font-size:8.6pt; }
+  .badges { display:flex; gap:5px; margin-top:5px; flex-wrap:wrap; }
+  .badge { border:1px solid var(--line); border-radius:10px; padding:2px 7px; font-size:7.4pt; color:var(--muted); background:#f8fafc; }
+  .badge.hot { border-color:#99f6e4; background:var(--accent-soft); color:#0f766e; font-weight:700; }
+  h2 { font-size:10pt; margin:9px 0 3px; color:var(--accent); text-transform:uppercase; letter-spacing:.06em; }
+  p { margin:3px 0; }
+  table { width:100%; border-collapse:collapse; font-size:8.4pt; }
+  th,td { border:1px solid var(--line); padding:3px 5px; vertical-align:top; text-align:left; }
+  th { background:#f1f5f9; font-weight:700; color:#334155; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  ul { margin:3px 0 3px 14px; padding:0; }
+  li { margin:1.5px 0; }
+  .flow { display:flex; align-items:center; gap:4px; margin:5px 0; flex-wrap:wrap; }
+  .node { border:1px solid var(--line); border-radius:5px; padding:3px 7px; font-size:7.8pt; background:#f8fafc; }
+  .node.engine { border-color:var(--accent); background:var(--accent-soft); font-weight:700; }
+  .arrow { color:var(--accent); font-weight:700; }
+  .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:5px 0; }
+  .kpi { border:1px solid var(--line); border-radius:6px; padding:5px 7px; text-align:center; }
+  .kpi b { display:block; font-size:14pt; color:var(--accent); line-height:1.1; }
+  .kpi span { font-size:7.2pt; color:var(--muted); }
+  .note { background:#fffbeb; border-left:3px solid var(--warn); padding:5px 8px; font-size:8.2pt; }
+  .ok { background:#f0fdf4; border-left:3px solid var(--ok); padding:5px 8px; font-size:8.2pt; }
+  footer { margin-top:auto; border-top:1px solid var(--line); padding-top:4px; font-size:7.2pt; color:var(--muted); display:flex; justify-content:space-between; }
+  .mono { font-family:Consolas,monospace; font-size:7.8pt; }
+  .tight li { margin:0.5px 0; }
+</style>
+</head>
+<body>
+
+<section class="page">
+  <header>
+    <div class="kicker">Agent Card - Projet 30 AGRO-FROID</div>
+    <h1>B4-DECIDE - Decision de chaine du froid et supervision humaine</h1>
+    <div class="sub">Agent deterministe, sans LLM ni appel externe. Version 1.0.0 - Agentic AI de ABA - 06/11/2026.</div>
+    <div class="badges">
+      <span class="badge hot">0 LLM</span>
+      <span class="badge hot">0 cle API</span>
+      <span class="badge hot">0 EUR / decision</span>
+      <span class="badge">5 noeuds / 4 liens</span>
+      <span class="badge">42/42 tests</span>
+      <span class="badge">4/4 runs plateforme</span>
+    </div>
+  </header>
+
+  <h2>1. Mission et perimetre</h2>
+  <p>Transformer un ecart de temperature verifie en une decision <b>opposable</b> et en un <b>package d'approbation humaine signe</b>. L'agent prepare la decision, il ne l'execute jamais.</p>
+  <div class="two">
+    <div>
+      <p><b>Dans le perimetre</b></p>
+      <ul class="tight">
+        <li>Verifier la telemetrie signee ligne a ligne</li>
+        <li>Recalculer ecarts et durees par chambre</li>
+        <li>Appliquer la politique P1-P6 et le seuil de confiance 0.80</li>
+        <li>Chiffrer l'exposition (score 0-100)</li>
+        <li>Emettre un token HITL a usage unique</li>
+        <li>Livrer l'evenement de facon idempotente</li>
+      </ul>
+    </div>
+    <div>
+      <p><b>Hors perimetre</b></p>
+      <ul class="tight">
+        <li>Executer le retrait ou le rappel</li>
+        <li>Contacter clients ou autorites</li>
+        <li>Interpreter des documents non structures</li>
+        <li>Remplacer l'auditeur qualite</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Architecture d'execution</h2>
+  <div class="flow">
+    <span class="node">ChatInput</span><span class="arrow">&rsaquo;</span>
+    <span class="node">Prompt (code moteur)</span><span class="arrow">&rsaquo;</span>
+    <span class="node engine">Python - moteur B4</span><span class="arrow">&rsaquo;</span>
+    <span class="node">Parser</span><span class="arrow">&rsaquo;</span>
+    <span class="node">ChatOutput</span>
+  </div>
+  <p class="mono">flow 6656f31f-ad1f-4591-b2ef-0d68c8aa6dad - projet f87f09a0-2c80-46bd-8cd8-8e53a297b12d</p>
+
+  <h2>3. Entrees et sorties</h2>
+  <table>
+    <tr><th style="width:17%">Element</th><th style="width:14%">Contrat</th><th>Contenu</th></tr>
+    <tr><td>Pack B2</td><td>JSON</td><td>incident, magasins, lots, fournisseurs, lots_detail (quantite, vendus), confidence, sources</td></tr>
+    <tr><td>Telemetrie</td><td>CSV signe</td><td>horodatage, chambre, capteur, temperature, sequence, key_id, HMAC</td></tr>
+    <tr><td>Politique</td><td>JSON</td><td>consignes par chambre, seuils (delta, duree), obligation legale, seuils d'exposition</td></tr>
+    <tr><td>Certificats</td><td>JSON</td><td>validite, date d'expiration, lots couverts par fournisseur</td></tr>
+    <tr><td>Resultat</td><td>JSON 9 cles</td><td>incident, ecarts, magasins, lots, fournisseurs, obligation, decision, hitl, sources</td></tr>
+    <tr><td>Package HITL</td><td>JSON</td><td>token signe, expediteur, expiration 30 min, role requis, double controle</td></tr>
+  </table>
+
+  <h2>4. Regles de decision</h2>
+  <table>
+    <tr><th style="width:16%">Decision</th><th>Condition</th><th style="width:14%">HITL</th></tr>
+    <tr><td><b>RETRAIT</b></td><td>Delta et duree au-dela des seuils, aucune vente constatee</td><td>Requis</td></tr>
+    <tr><td><b>RAPPEL</b></td><td>Delta et duree au-dela des seuils, lot deja vendu</td><td>Requis + double controle</td></tr>
+    <tr><td><b>QUARANTAINE</b></td><td>Certificat fournisseur absent, expire ou non lie au lot</td><td>Requis</td></tr>
+    <tr><td><b>SURVEILLANCE</b></td><td>Ecart sous les seuils</td><td>Non requis</td></tr>
+    <tr><td><b>ESCALADE</b></td><td>Confiance &lt; 0.80, aucune ligne verifiee ou aucun ecart verifiable</td><td>Requis</td></tr>
+  </table>
+
+  <div class="note"><b>Regle d'or :</b> si la telemetrie n'est pas fiable, la decision ne peut pas etre reduite - on escalade. Un faux journal ne fait jamais baisser une decision.</div>
+
+  <footer><span>Agent Card B4-DECIDE - M5</span><span>Page 1/2</span></footer>
+</section>
+
+<section class="page">
+  <header>
+    <div class="kicker">Agent Card - suite</div>
+    <h1>Supervision, limites et preuves</h1>
+    <div class="sub">Ce que l'agent ne peut pas faire, comment il echoue proprement, et ce qui le prouve.</div>
+  </header>
+
+  <h2>5. Garde-fous et interdictions</h2>
+  <div class="two">
+    <ul class="tight">
+      <li>Aucun modele de langage dans la boucle de decision</li>
+      <li>Aucun acces reseau sortant, aucune cle API</li>
+      <li>Aucune donnee personnelle en sortie (clients tokenises)</li>
+    </ul>
+    <ul class="tight">
+      <li>Aucune execution sans approbation humaine</li>
+      <li>Token lie au hash du resultat : toute modification invalide le token</li>
+      <li>Nonce a usage unique : le rejeu d'un token est refuse</li>
+    </ul>
+  </div>
+
+  <h2>6. Supervision humaine</h2>
+  <table>
+    <tr><th style="width:26%">Controle</th><th>Mise en oeuvre</th></tr>
+    <tr><td>Decisions soumises</td><td>RETRAIT, RAPPEL, QUARANTAINE, ESCALADE (SURVEILLANCE tracee seulement)</td></tr>
+    <tr><td>Roles</td><td>QUALITY_MANAGER (toutes decisions), DUTY_MANAGER (astreinte)</td></tr>
+    <tr><td>Double controle</td><td>Impose sur RAPPEL (impact consommateur)</td></tr>
+    <tr><td>Duree de vie du token</td><td>30 minutes, puis refus automatique</td></tr>
+    <tr><td>Trail</td><td>Ledger en chaine de hachage : chaque enregistrement reference le precedent</td></tr>
+  </table>
+
+  <h2>7. Modes de defaillance et reponses</h2>
+  <table>
+    <tr><th style="width:24%">Defaillance</th><th style="width:24%">Detection</th><th>Reponse</th></tr>
+    <tr><td>Telemetrie falsifiee</td><td>HMAC invalide ligne a ligne</td><td>Lignes en quarantaine, decision non reduite</td></tr>
+    <tr><td>Pack incoherent</td><td>Validateur 9 cles + recalcul</td><td>Refus de sortie, aucun resultat partiel</td></tr>
+    <tr><td>Plateforme indisponible</td><td>Echec de livraison</td><td>3 tentatives (1, 2, 4 s) puis DLQ</td></tr>
+    <tr><td>Rejeu d'une decision</td><td>Nonce + cle d'idempotence</td><td>Refus, aucun doublon en base</td></tr>
+    <tr><td>Confiance insuffisante</td><td>Confiance &lt; 0.80</td><td>ESCALADE vers un humain</td></tr>
+  </table>
+
+  <h2>8. Indicateurs mesures</h2>
+  <div class="grid4">
+    <div class="kpi"><b>42/42</b><span>tests automatises</span></div>
+    <div class="kpi"><b>4/4</b><span>decisions prouvees au run</span></div>
+    <div class="kpi"><b>9/9</b><span>cles du schema a chaque sortie</span></div>
+    <div class="kpi"><b>0</b><span>EUR par decision</span></div>
+  </div>
+  <p class="mono">Latence moteur &lt; 50 ms hors chargement - 0 PII - 0 appel externe - 0 LLM.</p>
+
+  <h2>9. Conformite</h2>
+  <table>
+    <tr><th style="width:24%">Referentiel</th><th>Point couvert</th></tr>
+    <tr><td>ISO/IEC 42001</td><td>Supervision humaine, transparence, journalisation des decisions</td></tr>
+    <tr><td>ISO 22000 / HACCP</td><td>Tracabilite des lots, des mesures et des sources citees</td></tr>
+    <tr><td>OWASP agentic</td><td>Usage excessif des outils evite (aucun outil expose), entrees validees, sortie figee</td></tr>
+    <tr><td>EU AI Act</td><td>Systeme a haut risque : la decision finale reste humaine et documentee</td></tr>
+  </table>
+
+  <h2>10. Preuves disponibles</h2>
+  <div class="ok">
+    Flux : <span class="mono">01_JSON/M5_B4_DECISION_HITL.json</span> - Captures : <span class="mono">m5_canvas.png</span>, <span class="mono">m5_playground.png</span><br>
+    Runs : <span class="mono">M5/proofs/platform_runs.json</span> - Outbox/DLQ : <span class="mono">M5/proofs/outbox_delivery.json</span>, <span class="mono">dlq_replay.json</span><br>
+    Dossier : <span class="mono">M5/docs/Documentation_M5.pdf</span> - Depot : github.com/Dr-aiNiot/agro-froid-projet30
+  </div>
+
+  <footer><span>Agent Card B4-DECIDE - M5 - Driss Larhrissi</span><span>Page 2/2</span></footer>
+</section>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 # Statut — Projet 30 AGRO-FROID
 
-**Derniere mise a jour : 06/11/2026 03:40**
+**Derniere mise a jour : 06/11/2026 13:45**
 
 ## Flux M5 sur Agentic AI de ABA - LIVRE
 
@@ -57,3 +57,16 @@
 - M2 Fatima : B1 ingestion + KG.
 - M3 Amal : B2 retrieval.
 - M4 Salaheddine : B3 securite.
+
+## Finalisation du reste a faire - cloture 06/11/2026
+
+| Chantier | Etat | Preuve |
+|---|---|---|
+| 18 cas limites du contrat B4 | **Livre** - 42/42 tests OK | `M5/proofs/test_output_full.txt`, `M5/tests/test_edge_cases.py` |
+| Outbox : retry, DLQ, rejeu, idempotence | **Livre** - 8/8 verifications OK | `M5/proofs/outbox_delivery.json`, `M5/proofs/dlq_replay.json` |
+| Agent Card (2 pages) | **Livre** | `M5/docs/Agent_Card_M5.pdf` + `.json` |
+| Durcissement du validateur | **Livre** - refus typÃ© au lieu de crash | `validate_result` insensible aux types inattendus |
+
+Constat de test : une entrÃ©e non textuelle faisait planter le validateur (`TypeError`) au lieu de le refuser proprement. Corrige : desormais `SchemaError` avec code explicite.
+
+Regle de rejeu : la DLQ conserve le payload signe ; le rejeu verifie le hash, ne recalcule pas la decision et ne cree aucun doublon.

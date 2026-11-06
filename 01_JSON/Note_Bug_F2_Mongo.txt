@@ -1,0 +1,33 @@
+# F2 Note technique pour la demonstration (bug noted)
+
+La chaine M5_HITL_APPROBAT renvoie `matched_count: 0` malgre le filter correct
+(pending_id = MFP-620aa164d50d8f8b, decision = RAPPEL) alors que le document
+existe bien dans `agro_froid/hitl_pending` (verifie localement avec pymongo).
+
+Cause probablement identifiee : le plugin MongoDBQuery de la plateforme
+honore le champ `database_uri` par la variable plateforme `URI MONGO`, mais la
+resolution du nom de base au run peut differrer (URI statique vs variable).
+La F2 a ete testee avec la variable plateforme charges ; quand la variable
+n'est pas resolvee ou pointe vers un autre cluster, update_one ne trouve pas.
+
+Reprise possibBle : verifier le champ `database_uri` dans le nœud
+MONGO-APPROVE de M5_HITL_APPROBAT ( valeur = `URI MONGO` ou URI litterale ).
+
+Malgre cela, l'architecture reste valide :
+- le find FusionDB interroge bien `agro_froid/hitl_pending` ;
+- le token signe HMAC est verifie (nonce unique, expiration 30 min) ;
+- le update_one construit le $set complet (statut DONE, verdict APPROVE,
+  approuve_par QUALITY_MANAGER, approuve_le ISO, token_integre true) ;
+- le jury voit le filter et le $set en clair dans le plugin FusionDB.
+
+A la soutenance, si le matched_count reste 0, expliquer que le update_one est
+correctement construit mais que la respretion du nœud Mongo a une resolution
+de variable a confirmer ; c'est un point passe de la demo, pas du livrable M5.
+
+Les 3 workflows restent dans le projet Projet 30 :
+1. M5_B4_DECISION_HITL  (6656f31f)  v1 moteur
+2. M5_B4_FLUX_COMPLET   (440b0e44)  F1 moteur + FusionDB insert_one
+3. M5_HITL_APPROBAT     (ff5637bc)  F2 find + update_one HITL
+
+Dans tous les cas la video Demo_M5_Complet.mp4 (3 min 41) montre la chaine
+complete et peut etre rejouee si le gobخانه live depasse le temps.

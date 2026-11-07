@@ -86,3 +86,31 @@ Phrase de cloture : "L'agent prepare, l'humain signe : le journal est append-onl
 
 Si le jury demande "ou est le blocage ?" : "Le flux s'arrete sur la demande d'approbation, ecrite en base
 avec son identifiant. Le second message, dans la meme session, reprend ce dossier et l'approuve."
+
+---
+
+## PROTOCOLE REEL VALIDE LE 07/11 (a suivre a la lettre)
+
+Contrainte technique du fork : le noeud FusionDB ferme son client Mongo apres
+chaque execution. Un deuxieme run dans le MEME graphe sans rechargement echoue
+avec "Cannot use MongoClient after close". Donc :
+
+1. Ouvrir le workflow M5_B4_DECISION_HITL (6 noeuds / 5 liens, nœud FusionDB cable).
+2. Playground -> saisir `rappel` -> attendre la reponse.
+   Sortie attendue : RAPPEL, P2_LOT_VENDU, schema 9/9, puis
+   "type": "PENDING_DOSSIER", "statut": "PENDING", pending_id MFP-...,
+   instruction "APPROBATION REQUISE - repondre : APPROVE pending_id=... actor=...",
+   et "inserted_id". Le flux s'arrete la.
+3. FERMER / RECHARGER le playground (ou la page) : le client Mongo est recree.
+4. Playground -> saisir `APPROVE pending_id=<celui affiche> actor=VOTRE_NOM`.
+   Sortie attendue : "type": "APPROVAL", "verdict": "APPROVE", "statut": "DONE",
+   token_verifie true, inserted_id.
+5. Phrase de cloture : "Journal append-only : l'agent prepare, l'humain signe,
+   rien n'est ecrase. La preuve est en base."
+
+Si on demande "pourquoi recharger ?" : "le connecteur Mongo de la plateforme
+ferme son client apres chaque appel ; en production on garderait une connexion
+pool, ici on relance la session pour le deuxieme passage."
+
+Preuves disponibles dans la video Demo_M5_Complet.mp4 (3 min 24) :
+canvas 6 nœuds, tour 1, tour 2, verification Mongo (7 documents), CI GitHub verte.

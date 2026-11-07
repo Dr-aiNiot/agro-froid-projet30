@@ -105,3 +105,19 @@ Export importable : `01_JSON/M5_B4_DECISION_HITL.json` (6 noeuds / 5 liens).
 - 1 workflow par membre (regle M0 / RunFlow) : les flux F1 et F2 ont ete supprimes ; archive dans `02_ANNEXES/archive_3flux/`.
 - Les liens sont persistes et visibles au rechargement (l'id de poignee du noeud Mongo est `MONGO-OUTBOX`, pas l'id du noeud : c'est ce qui faisait elaguer les liens).
 - Toujours cliquer sur **Save** (disquette) apres une modification du canvas.
+
+## Validation du 07/11 - captures reelles
+
+| Preuve | Fichier |
+|---|---|
+| Canvas 6 noeuds / 5 liens avec FusionDB cable | `01_JSON/live_canvas_6n.png` |
+| Tour 1 playground (PENDING + inserted_id) | `01_JSON/live_tour1.png` |
+| Tour 2 playground (APPROVAL + DONE + inserted_id) | `01_JSON/live_tour2.png` |
+| Verification Mongo (pymongo, 7 documents) | `01_JSON/live_mongo_proof.png` + `mongo_dump_0711.txt` |
+| CI GitHub Actions (4 runs verts) | `01_JSON/live_ci_github.png` |
+
+Contrainte constatee : le nœud FusionDB ferme son client Mongo apres execution.
+Le deuxieme passage exige de recharger le playground (sinon "Cannot use MongoClient
+after close"). Protocole detaille dans `M5/docs/Script_Presentation_M5.txt`.
+
+Video : `M5/docs/Demo_M5_Complet.mp4` - 3 min 24, captures reelles (plus de terminaux simules).

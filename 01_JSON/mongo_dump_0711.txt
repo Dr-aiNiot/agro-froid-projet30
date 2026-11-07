@@ -1,0 +1,9 @@
+database : agro_froid     collection : hitl_pending     documents : 7
+
+{"type": "APPROVAL", "pending_id": "MFP-81411e54895763fd", "verdict": "APPROVE", "actor": "DRISS_LARHRISSI", "statut": "DONE", "token_verifie": true}
+{"type": "APPROVAL", "pending_id": "MFP-81411e54895763fd", "verdict": "APPROVE", "actor": "DRISS_LARHRISSI", "statut": "DONE", "token_verifie": true}
+{"type": "PENDING_DOSSIER", "statut": "PENDING", "pending_id": "MFP-81411e54895763fd"}
+{"type": "APPROVAL", "pending_id": "MFP-724fa931514a2b5a", "verdict": "APPROVE", "actor": "DRISS_LARHRISSI", "statut": "DONE", "token_verifie": true}
+{"type": "PENDING_DOSSIER", "statut": "PENDING", "pending_id": "MFP-724fa931514a2b5a"}
+{"type": "APPROVAL", "pending_id": "MFP-824796d244185b7b", "verdict": "APPROVE", "actor": "DRISS_LARHRISSI", "statut": "DONE", "token_verifie": true}
+{"type": "PENDING_DOSSIER", "statut": "PENDING", "pending_id": "MFP-824796d244185b7b"}

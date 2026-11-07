@@ -74,6 +74,11 @@ python src/run_demo.py                               # 6 cas metier
 
 Livrables : `docs/Documentation_M5.pdf`, `docs/Agent_Card_M5.pdf`, `docs/Slides_M5.pdf`.
 
-## Chaine complete 3 flux
+## Workflow unique (2 passages)
 
-F1 = `M5_B4_FLUX_COMPLET` (moteur + FusionDB insert_one) → F2 = `M5_HITL_APPROBAT` (find + update_one PENDING→DONE). Détail dans `STATUS.md`.
+`M5_B4_DECISION_HITL` - 6 noeuds / 5 liens : Entree > Prompt (moteur) > Python > Parseur > FusionDB (MongoDBQuery) > Sortie.
+
+- tour 1 : `rappel` -> decision + document `PENDING_DOSSIER` dans `agro_froid.hitl_pending`, sortie "APPROBATION REQUISE" ;
+- tour 2 : `APPROVE pending_id=<id> actor=<nom>` -> document `APPROVAL` (statut DONE, verdict APPROVE, token verifie).
+
+Apres toute modification du canvas : cliquer sur **Save** (disquette).

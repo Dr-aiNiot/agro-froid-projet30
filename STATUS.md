@@ -71,22 +71,37 @@ Constat de test : une entrÃ©e non textuelle faisait planter le validateur (`Ty
 
 Regle de rejeu : la DLQ conserve le payload signe ; le rejeu verifie le hash, ne recalcule pas la decision et ne cree aucun doublon.
 
-## Chaine COMPLETE M5 sur Agentic AI de ABA (06/11/2026 17:30)
+## Workflow unique M5 - 06/11/2026 19:00
 
-| Flux | ID | Topologie | Rôle | Preuve |
-|---|---|---|---|---|
-| M5_B4_DECISION_HITL | `6656f31f` | 5n/4e | v1 : moteur | export `01_JSON/M5_B4_DECISION_HITL.json` |
-| **M5_B4_FLUX_COMPLET** | `440b0e44` | 6n/5e | F1 : moteur + FusionDB `insert_one` | export `01_JSON/M5_B4_FLUX_COMPLET.json` |
-| **M5_HITL_APPROBAT** | `ff5637bc` | 10n/9e | F2 : FusionDB `find` + `update_one` PENDING → DONE | export `01_JSON/M5_HITL_APPROBAT.json` |
+| Element | Valeur |
+|---|---|
+| Flux | **M5_B4_DECISION_HITL** (`6656f31f-ad1f-4591-b2ef-0d68c8aa6dad`) |
+| Topologie | **6 noeuds / 5 liens** : Entree > Prompt (moteur) > Python > Parseur > **FusionDB (MongoDBQuery)** > Sortie |
+| LLM | aucun - moteur deterministe, 0 cle API |
+| Mongo | `agro_froid.hitl_pending`, operation `insert_one`, URI en variable plateforme `URI MONGO` |
+| Passages | **2 tours dans le meme chat** (voir ci-dessous) |
 
-Chaîne HITL démontrée au run : F1 crée le dossier PENDING (MFP-620aa164d50d8f8b), F2
-- `find` FusionDB sur `agro_froid/hitl_pending`,
-- vérification du token signé HMAC-SHA256,
-- `update_one` : `statut` PENDING → **DONE**, `verdict` = APPROVE, `approuve_par` = QUALITY_MANAGER, `token_integre` = true.
+### Les deux tours (demonstration)
 
-**Composants plateforme** : 2 nœuds FusionDB (MongoDBQuery) sur F1/F2, 0 credential en clair (URI = variable plateforme). Captures : `01_JSON/f1_canvas.png`, `01_JSON/f2_canvas.png`. Vidéo 3 min 41 s : `M5/docs/Demo_M5_Complet.mp4`.
+**Tour 1 - decision + demande d'approbation**
+Entree `rappel` > RAPPEL / P2_LOT_VENDU / schema 9-9 > FusionDB `insert_one` d'un document
+`{type: PENDING_DOSSIER, statut: PENDING, pending_id: MFP-xxxx, instruction: "APPROBATION REQUISE - repondre : APPROVE pending_id=... actor=..."}`.
+Le flux s'arrete la, en attente de l'humain.
 
-## Reste a faire
+**Tour 2 - approbation dans le meme chat**
+Entree `APPROVE pending_id=MFP-xxxx actor=DRISS_LARHRISSI` > FusionDB `insert_one` d'un document
+`{type: APPROVAL, verdict: APPROVE, statut: DONE, actor: ..., token_verifie: true, journal: append-only}`.
 
-- Repo GitHub : `github.com/Dr-aiNiot/agro-froid-projet30` — push de l'export des 2 nouveaux flux à la prochaine session.
-- ClickUp : listes M5 pour push.
+Preuves au run (07/11) :
+- tour 1 : `pending_id=MFP-724fa931514a2b5a`, `insert_one` OK, instruction presente ;
+- tour 2 : `type=APPROVAL`, `verdict=APPROVE`, `statut=DONE`, `inserted_id` retourne ;
+- Mongo verifie : 2 PENDING_DOSSIER + 2 APPROVAL dans `agro_froid.hitl_pending`.
+
+Captures : `01_JSON/canvas_M5_B4_DECISION_HITL.png`, `01_JSON/m5_canvas.png`.
+Export importable : `01_JSON/M5_B4_DECISION_HITL.json` (6 noeuds / 5 liens).
+
+### Regles plateforme appliquees
+
+- 1 workflow par membre (regle M0 / RunFlow) : les flux F1 et F2 ont ete supprimes ; archive dans `02_ANNEXES/archive_3flux/`.
+- Les liens sont persistes et visibles au rechargement (l'id de poignee du noeud Mongo est `MONGO-OUTBOX`, pas l'id du noeud : c'est ce qui faisait elaguer les liens).
+- Toujours cliquer sur **Save** (disquette) apres une modification du canvas.

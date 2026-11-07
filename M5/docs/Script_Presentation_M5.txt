@@ -67,3 +67,22 @@ Ordre des onglets a ouvrir AVANT la presentation :
 1. Agentic AI de ABA - flux M5_B4_DECISION_HITL (canvas)
 2. m5_canvas.png (secours si la plateforme rame)
 3. m5_playground.png (plan B demo)
+
+---
+
+## MISE A JOUR 07/11 - WORKFLOW UNIQUE (2 passages)
+
+Un seul workflow : `M5_B4_DECISION_HITL`, 6 noeuds / 5 liens, avec un noeud FusionDB (MongoDBQuery) cable
+entre le Parseur et la Sortie. Pas de LLM, aucune cle API.
+
+Tour 1 - dire : "Je lance le cas rappel."
+Resultat attendu : decision RAPPEL, motif P2_LOT_VENDU, schema 9/9, puis
+"APPROBATION REQUISE - repondre dans le meme chat : APPROVE pending_id=MFP-... actor=VOTRE_NOM".
+
+Tour 2 - dire : "Le dossier est en attente. J'approuve."
+Saisir : APPROVE pending_id=MFP-... actor=VOTRE_NOM
+Resultat attendu : type APPROVAL, verdict APPROVE, statut DONE, token_verifie true, inserted_id.
+Phrase de cloture : "L'agent prepare, l'humain signe : le journal est append-only, rien n'est ecrase."
+
+Si le jury demande "ou est le blocage ?" : "Le flux s'arrete sur la demande d'approbation, ecrite en base
+avec son identifiant. Le second message, dans la meme session, reprend ce dossier et l'approuve."
